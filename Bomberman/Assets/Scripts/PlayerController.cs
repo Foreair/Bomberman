@@ -6,7 +6,9 @@ public class PlayerController : MonoBehaviour
 {
 
     public float speed;
-    private Vector3 endPosition;
+    //private Vector3 endPosition;
+    private Vector2 endPosition2d;
+    [SerializeField]
     private bool moving;
     private Rigidbody2D rb2d;
     private Transform mypos;
@@ -22,41 +24,71 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        UpdateMovement();
+        
+    }
 
-        movement.x = Input.GetAxis("Horizontal");
-        movement.y = Input.GetAxis("Vertical");
-        //movement.Normalize();
 
-        if (movement.x != 0)
+    private void FixedUpdate()
+    {
+        if (moving)
         {
-
-            ////With forces
-            //endPosition = new Vector2(mypos.position.x + movement.x, mypos.position.y);
-
-            //Without forces
-            endPosition = new Vector3(mypos.position.x + movement.x, mypos.position.y, mypos.position.z);
-            mypos.SetPositionAndRotation(endPosition, mypos.rotation);
-
-            moving = true;
-
-            //Debug.Log("Moving left or right. End position: x: " + endPosition.x + " y: " + endPosition.y);
-        }
-        if (movement.y != 0)
-        {
-            //Without forces
-            endPosition = new Vector3(mypos.position.x, mypos.position.y + movement.y, mypos.position.z);
-            mypos.SetPositionAndRotation(endPosition, mypos.rotation);
-
-        }
-        else
-        {
-            moving = false;
+            rb2d.MovePosition(endPosition2d);
         }
     }
 
+    private void UpdateMovement()
+    {
+        movement.x = Input.GetAxisRaw("Horizontal");
+        movement.y = Input.GetAxisRaw("Vertical");
+
+        if (movement.x != 0)
+        {
+            moving = true;
+
+            if (movement.x > 0)
+            {
+                float realMoved = speed * Time.deltaTime;
+                endPosition2d = new Vector2(mypos.position.x + realMoved, mypos.position.y);
+                Debug.Log("Moving right");
+
+            }
+            else
+            {
+                float realMoved = speed * Time.deltaTime;
+                endPosition2d = new Vector2(mypos.position.x - realMoved, mypos.position.y);
+                Debug.Log("Moving left");
+            }
+
+        }
+        if (movement.y != 0)
+        {
+            moving = true;
+            if (movement.y > 0)
+            {
+                float realMoved = speed * Time.deltaTime;
+                endPosition2d = new Vector2(mypos.position.x, mypos.position.y + realMoved);
+                Debug.Log("Moving up");
+
+            }
+            else
+            {
+                float realMoved = speed * Time.deltaTime;
+                endPosition2d = new Vector2(mypos.position.x, mypos.position.y - realMoved);
+                Debug.Log("Moving up");
+            }
+
+        }
+
+        if (!IsMoving(movement)) moving = false;
+    }
+
+
+
     private bool IsMoving(Vector2 movement)
     {
-        if (movement.x == 0 && movement.y == 0) {
+        if (movement.x == 0 && movement.y == 0)
+        {
             return false;
         }
         else
