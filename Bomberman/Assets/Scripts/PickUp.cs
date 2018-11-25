@@ -17,8 +17,7 @@ public class PickUp : MonoBehaviour
 
     private void Pickup()
     {
-        GameObject instance = Instantiate(pickupEffect, transform.position, transform.rotation);
-
+        Instantiate(pickupEffect, transform.position, transform.rotation);
 
         Destroy(gameObject);
         //ParticleSystem p = instance.GetComponent<ParticleSystem>();
