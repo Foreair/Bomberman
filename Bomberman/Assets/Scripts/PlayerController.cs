@@ -6,18 +6,15 @@ public class PlayerController : MonoBehaviour
 {
 
     public float speed;
-    //private Vector3 endPosition;
     private Vector2 endPosition2d;
-    [SerializeField]
     private bool moving;
     private Rigidbody2D rb2d;
-    private Transform mypos;
     private Vector2 movement = Vector2.zero;
+    public GameObject Bomb;
 
     private void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
-        mypos = GetComponent<Transform>();
         moving = false;
     }
 
@@ -25,6 +22,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         UpdateMovement();
+        UpdateMechanics();
         
     }
 
@@ -49,14 +47,14 @@ public class PlayerController : MonoBehaviour
             if (movement.x > 0)
             {
                 float realMoved = speed * Time.deltaTime;
-                endPosition2d = new Vector2(mypos.position.x + realMoved, mypos.position.y);
+                endPosition2d = new Vector2(transform.position.x + realMoved, transform.position.y);
                 Debug.Log("Moving right");
 
             }
             else
             {
                 float realMoved = speed * Time.deltaTime;
-                endPosition2d = new Vector2(mypos.position.x - realMoved, mypos.position.y);
+                endPosition2d = new Vector2(transform.position.x - realMoved, transform.position.y);
                 Debug.Log("Moving left");
             }
 
@@ -67,14 +65,14 @@ public class PlayerController : MonoBehaviour
             if (movement.y > 0)
             {
                 float realMoved = speed * Time.deltaTime;
-                endPosition2d = new Vector2(mypos.position.x, mypos.position.y + realMoved);
+                endPosition2d = new Vector2(transform.position.x, transform.position.y + realMoved);
                 Debug.Log("Moving up");
 
             }
             else
             {
                 float realMoved = speed * Time.deltaTime;
-                endPosition2d = new Vector2(mypos.position.x, mypos.position.y - realMoved);
+                endPosition2d = new Vector2(transform.position.x, transform.position.y - realMoved);
                 Debug.Log("Moving up");
             }
 
@@ -83,6 +81,13 @@ public class PlayerController : MonoBehaviour
         if (!IsMoving(movement)) moving = false;
     }
 
+    private void UpdateMechanics()
+    {
+        if (Input.GetButton("Jump"))
+        {
+            Instantiate(Bomb, transform);
+        }
+    }
 
 
     private bool IsMoving(Vector2 movement)
