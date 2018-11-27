@@ -37,8 +37,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1272174633844726}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.3, y: 1.1, z: 0}
-  m_LocalScale: {x: 0.15, y: 0.15, z: 0}
+  m_LocalPosition: {x: -6.55, y: -0.48, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -79,14 +79,14 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 15.21, y: 20.19}
-    newSize: {x: 15.21, y: 20.19}
+    oldSize: {x: 0.375, y: 0.671875}
+    newSize: {x: 0.375, y: 0.671875}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 15.21, y: 20.19}
+  m_Size: {x: 0.375, y: 0.671875}
   m_EdgeRadius: 0
 --- !u!114 &114104571117658432
 MonoBehaviour:
@@ -99,8 +99,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c98fd27049aaae42aec8c6d8e23d58a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 15
-  moving: 0
+  speed: 5
+  maxBombs: 1
+  Bomb: {fileID: 1058165843028846, guid: 08a3979b96976f1439f151ffc1ca3f43, type: 2}
+  grid: {fileID: 2569400266886249950, guid: 8b7b73d97d216844eb3836592f301336, type: 2}
 --- !u!212 &212122247243841278
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -136,12 +138,12 @@ SpriteRenderer:
   m_SortingLayerID: -496435951
   m_SortingLayer: -1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: f2096a28ae0de324e9fa631f8efeb592, type: 3}
+  m_Sprite: {fileID: 21300000, guid: de225d4b36992824dadc3b903b6f8dd3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 15.21, y: 20.19}
+  m_Size: {x: 0.375, y: 0.671875}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

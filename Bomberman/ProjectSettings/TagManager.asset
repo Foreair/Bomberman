@@ -51,6 +51,9 @@ TagManager:
   - name: Obstacles Destroyable
     uniqueID: 2013991647
     locked: 0
+  - name: Bombs
+    uniqueID: 2696330983
+    locked: 0
   - name: Player
     uniqueID: 3798531345
     locked: 0
