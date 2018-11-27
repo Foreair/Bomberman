@@ -4,6 +4,16 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - Explosion
+  - Bomb
+  - Destroyable Walls
+  - Walls
+  - Ground
+  - Background
+  - Power Up
+  - Boost Speed
+  - Bomb Power
+  - Penetration Power
   - PickUp
   layers:
   - Default
@@ -15,11 +25,11 @@ TagManager:
   - 
   - 
   - Ground
-  - Obstacles
+  - Walls
   - Player
-  - Obstacles Destroyable
+  - Destroyable Walls
   - Background
-  - 
+  - Power Ups
   - 
   - 
   - 
@@ -44,6 +54,9 @@ TagManager:
     locked: 0
   - name: Ground
     uniqueID: 797223365
+    locked: 0
+  - name: Power Ups
+    uniqueID: 868301317
     locked: 0
   - name: Obstacles
     uniqueID: 1456764501

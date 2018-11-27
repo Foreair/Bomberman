@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class PlayerController : MonoBehaviour
     public int maxBombs = 1;
     //[HideInInspector]
     public int currentBombs = 0;
+    public bool dead = false;
     private Vector2 endPosition2d;
     private bool moving;
     private Rigidbody2D rb2d;
@@ -19,7 +21,6 @@ public class PlayerController : MonoBehaviour
     public GameObject Bomb;
     public Grid grid;
 
-    
     private void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
@@ -99,6 +100,27 @@ public class PlayerController : MonoBehaviour
             currentBombs++;
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Explosion"))
+        {
+            dead = true;
+            Destroy(gameObject);
+        }
+
+        if(collision.CompareTag("Bomb Power")){
+            Destroy(collision.gameObject);
+            maxBombs++;
+        }
+
+        if (collision.CompareTag("Boost Speed")){
+            Destroy(collision.gameObject);
+            speed++;
+        }
+    }
+
+
 
     public bool IsMoving(Vector2 movement)
     {
