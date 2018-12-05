@@ -5,6 +5,7 @@ using UnityEngine.Tilemaps;
 
 public class PlayerController : MonoBehaviour
 {
+    //Public player variables
     [Header("Player Variables")]
     [Tooltip("Player's movement speed")]
     public float speed = 5;
@@ -12,24 +13,58 @@ public class PlayerController : MonoBehaviour
     public int maxBombs = 1;
     [Tooltip("Radius of the explosion in each axis")]
     public int radiusExplosion = 1;
+
+    [Space] [Header("Miscellaneous")]
+    [Tooltip("Prefab containing the bomb")]
+    public GameObject Bomb;
+    [Tooltip("Grid containing all the tilemaps from the current level")]
+    public Grid grid;
     //[HideInInspector]
-    public int currentBombs = 0;
-    public bool dead = false;
-    private Vector2 endPosition2d;
+
+    //Private player variables
+    private int currentBombs = 0;
+    private bool dead = false;
     private bool moving;
+    private Vector2 movement = Vector2.zero;
+    private Vector2 endPosition2d;
+
+    //Physics related variables
     private Rigidbody2D rb2d;
     private BoxCollider2D mycollider;
-    private Vector2 movement = Vector2.zero;
-    [Space]
-    public GameObject Bomb;
-    public Grid grid;
+    private Vector2 rightUp, rightDown, leftUp, leftDown;
+    private float offset = 0.05f;
+    private LayerMask Mask;
 
+    //Animator
     private Animator animator;
 
-    private float offset = 0.05f;
-    private Vector2 rightUp, rightDown, leftUp, leftDown;
 
-    LayerMask Mask;
+
+    public bool Dead
+    {
+        get
+        {
+            return dead;
+        }
+
+        set
+        {
+            dead = value;
+        }
+    }
+
+    public int CurrentBombs
+    {
+        get
+        {
+            return currentBombs;
+        }
+
+        set
+        {
+            currentBombs = value;
+        }
+    }
 
     private void Start()
     {
@@ -151,12 +186,12 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateMechanics()
     {
-        if (Input.GetButtonDown("Jump") && currentBombs < maxBombs)
+        if (Input.GetButtonDown("Jump") && CurrentBombs < maxBombs)
         {
 
             GameObject instance = Instantiate(Bomb, SnapBomb(transform.position), Bomb.transform.rotation);
             instance.transform.parent = transform;
-            currentBombs++;
+            CurrentBombs++;
         }
     }
 
@@ -164,7 +199,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Explosion"))
         {
-            dead = true;
+            Dead = true;
             Destroy(gameObject);
         }
 

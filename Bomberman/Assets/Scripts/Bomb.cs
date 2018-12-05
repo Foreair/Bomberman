@@ -33,7 +33,7 @@ public class Bomb : MonoBehaviour
     private void Explode()
     {
         PlayerController player = gameObject.GetComponentInParent<PlayerController>();
-        player.currentBombs--;
+        player.CurrentBombs--;
 
         GameObject explosionInstance = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         explosionInstance.transform.parent = transform;

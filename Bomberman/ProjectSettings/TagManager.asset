@@ -31,7 +31,7 @@ TagManager:
   - Background
   - Power Ups
   - Bombs
-  - 
+  - Enemies
   - 
   - 
   - 
@@ -66,6 +66,9 @@ TagManager:
     locked: 0
   - name: Bombs
     uniqueID: 2696330983
+    locked: 0
+  - name: Enemies
+    uniqueID: 1436178493
     locked: 0
   - name: Player
     uniqueID: 3798531345
