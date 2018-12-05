@@ -60,10 +60,8 @@ public class Bomb : MonoBehaviour
             }
             else if (hit2D.collider.CompareTag("Destroyable Walls"))
             {
-                Collider2D foo = hit2D.collider;
-                Vector3 aux = transform.TransformDirection(new Vector3(direction.x, direction.y, 0));
-                Vector3 bar = transform.position + new Vector3(direction.x * i, direction.y * i, 0);
-                DWTilemap.SetTile(DWTilemap.WorldToCell(bar), null);
+                Vector3 explosionPos = transform.position + new Vector3(direction.x * i, direction.y * i, 0);
+                DWTilemap.SetTile(DWTilemap.WorldToCell(explosionPos), null);
                 yield break;
             }
 

@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 endPosition2d;
     private bool moving;
     private Rigidbody2D rb2d;
+    private BoxCollider2D mycollider;
     private Vector2 movement = Vector2.zero;
     [Space]
     public GameObject Bomb;
@@ -25,10 +26,17 @@ public class PlayerController : MonoBehaviour
 
     private Animator animator;
 
+    private float offset = 0.05f;
+    private Vector2 rightUp, rightDown, leftUp, leftDown;
+
+    LayerMask Mask;
+
     private void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        mycollider = GetComponent<BoxCollider2D>();
         animator = GetComponentInChildren<Animator>();
+        Mask = LayerMask.GetMask("Walls") | LayerMask.GetMask("Destroyable Walls") | LayerMask.GetMask("Background");
         moving = false;
     }
 
@@ -46,6 +54,7 @@ public class PlayerController : MonoBehaviour
         if (moving)
         {
             rb2d.MovePosition(endPosition2d);
+            Debug.Log("Velocity: x " + rb2d.velocity.x + ", y " + rb2d.velocity.y);
         }
     }
 
@@ -60,45 +69,84 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("x", movement.x);
         animator.SetFloat("y", movement.y);
 
+        moving = false;
+
+        rightUp = new Vector2(transform.position.x + mycollider.bounds.extents.x, transform.position.y + mycollider.bounds.extents.y);
+        rightDown = new Vector2(transform.position.x + mycollider.bounds.extents.x, transform.position.y - mycollider.bounds.extents.y);
+        leftUp = new Vector2(transform.position.x - mycollider.bounds.extents.x, transform.position.y + mycollider.bounds.extents.y);
+        leftDown = new Vector2(transform.position.x - mycollider.bounds.extents.x, transform.position.y - mycollider.bounds.extents.y);
+
+
         if (movement.x != 0)
         {
-            moving = true;
-
             if (movement.x > 0)
             {
-                float realMoved = speed * Time.deltaTime;
-                endPosition2d = new Vector2(transform.position.x + realMoved, transform.position.y);
-                Debug.Log("Moving right");
+                RaycastHit2D hit = Physics2D.Raycast(rightUp, new Vector2(movement.x, 0), offset, Mask);
+                RaycastHit2D hit2 = Physics2D.Raycast(rightDown, new Vector2(movement.x, 0), offset, Mask);
+
+                if (hit.collider || hit2.collider)
+                    moving = false;
+                else
+                {
+                    float realMoved = speed * Time.deltaTime;
+                    endPosition2d = new Vector2(transform.position.x + realMoved, transform.position.y);
+                    Debug.Log("Moving right");
+                    moving = true;
+                }
+
             }
             else
             {
-                float realMoved = speed * Time.deltaTime;
-                endPosition2d = new Vector2(transform.position.x - realMoved, transform.position.y);
-                Debug.Log("Moving left");
+                RaycastHit2D hit = Physics2D.Raycast(leftUp, new Vector2(movement.x, 0), offset, Mask);
+                RaycastHit2D hit2 = Physics2D.Raycast(leftDown, new Vector2(movement.x, 0), offset, Mask);
+
+                if (hit.collider || hit2.collider)
+                    moving = false;
+                else
+                {
+                    float realMoved = speed * Time.deltaTime;
+                    endPosition2d = new Vector2(transform.position.x - realMoved, transform.position.y);
+                    Debug.Log("Moving left");
+                    moving = true;
+                }
             }
 
         }
         if (movement.y != 0)
         {
-            moving = true;
             if (movement.y > 0)
             {
-                float realMoved = speed * Time.deltaTime;
-                endPosition2d = new Vector2(transform.position.x, transform.position.y + realMoved);
-                Debug.Log("Moving up");
+                RaycastHit2D hit = Physics2D.Raycast(rightUp, new Vector2(0, movement.y), offset, Mask);
+                RaycastHit2D hit2 = Physics2D.Raycast(leftUp, new Vector2(0, movement.y), offset, Mask);
 
+                if (hit.collider || hit2.collider)
+                    moving = false;
+                else
+                {
+                    float realMoved = speed * Time.deltaTime;
+                    endPosition2d = new Vector2(transform.position.x, transform.position.y + realMoved);
+                    Debug.Log("Moving up");
+                    moving = true;
+                }
             }
             else
             {
-                float realMoved = speed * Time.deltaTime;
-                endPosition2d = new Vector2(transform.position.x, transform.position.y - realMoved);
-                
-                Debug.Log("Moving down");
-            }
+                RaycastHit2D hit = Physics2D.Raycast(rightDown, new Vector2(0, movement.y), offset, Mask);
+                RaycastHit2D hit2 = Physics2D.Raycast(leftDown, new Vector2(0, movement.y), offset, Mask);
 
+                if (hit.collider || hit2.collider)
+                    moving = false;
+                else
+                {
+                    float realMoved = speed * Time.deltaTime;
+                    endPosition2d = new Vector2(transform.position.x, transform.position.y - realMoved);
+                    Debug.Log("Moving down");
+                    moving = true;
+                }
+            }
         }
 
-        if (!IsMoving(movement)) moving = false;
+        UpdateAnimator();
     }
 
     private void UpdateMechanics()
@@ -137,21 +185,6 @@ public class PlayerController : MonoBehaviour
     }
 
 
-
-    public bool IsMoving(Vector2 movement)
-    {
-        if (movement.x == 0 && movement.y == 0)
-        {
-            animator.SetBool("moving", false);
-            return false;
-        }
-        else
-        {
-            animator.SetBool("moving", true);
-            return true;
-        }
-    }
-
     private Vector3 SnapBomb(Vector3 pos)
     {
         Vector3 snappedPos = Vector3.zero;
@@ -176,6 +209,18 @@ public class PlayerController : MonoBehaviour
         return snappedPos;
     }
 
+
+    private void UpdateAnimator()
+    {
+        if (!moving)
+        {
+            animator.SetBool("moving", false);
+        }
+        else
+        {
+            animator.SetBool("moving", true);
+        }
+    }
     //[UnityEditor.MenuItem("Tools/Increase Speed")]
     //public static void IncreaseSpeed()
     //{

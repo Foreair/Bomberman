@@ -22,9 +22,9 @@ GameObject:
   - component: {fileID: 212123555576993080}
   - component: {fileID: 50450149764180494}
   - component: {fileID: 61580331818357630}
-  - component: {fileID: 82162879361659952}
   - component: {fileID: 114397141889665676}
   - component: {fileID: 114917119280427528}
+  - component: {fileID: 82637693706600050}
   m_Layer: 14
   m_Name: Bomb
   m_TagString: Bomb
@@ -90,7 +90,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!82 &82162879361659952
+--- !u!82 &82637693706600050
 AudioSource:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -197,6 +197,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifeTime: 3
+  bombSound: {fileID: 8300000, guid: 6a33562f0235d7742b6b69e1123faf5c, type: 3}
+  explosionSound: {fileID: 8300000, guid: 6cbd281cbc7e11f4994250fff51b14b9, type: 3}
   explosionPrefab: {fileID: 1117538154586176, guid: 600a4d1f378fb0a45962f7b90de51817,
     type: 2}
 --- !u!114 &114917119280427528
