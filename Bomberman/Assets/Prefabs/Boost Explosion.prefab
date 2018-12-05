@@ -22,8 +22,8 @@ GameObject:
   - component: {fileID: 212666315778651116}
   - component: {fileID: 61571648257935120}
   m_Layer: 13
-  m_Name: Penetration Power
-  m_TagString: Penetration Power
+  m_Name: Boost Explosion
+  m_TagString: Boost Explosion
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

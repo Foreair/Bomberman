@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     public float speed = 5;
     [Tooltip("Maximum number of bombs the player can deploy")]
     public int maxBombs = 1;
+    [Tooltip("Radius of the explosion in each axis")]
+    public int radiusExplosion = 1;
     //[HideInInspector]
     public int currentBombs = 0;
     public bool dead = false;
@@ -21,9 +23,12 @@ public class PlayerController : MonoBehaviour
     public GameObject Bomb;
     public Grid grid;
 
+    private Animator animator;
+
     private void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        animator = GetComponentInChildren<Animator>();
         moving = false;
     }
 
@@ -49,6 +54,12 @@ public class PlayerController : MonoBehaviour
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
+        //movement.x = Input.GetAxis("Horizontal");
+        //movement.y = Input.GetAxis("Vertical");
+
+        animator.SetFloat("x", movement.x);
+        animator.SetFloat("y", movement.y);
+
         if (movement.x != 0)
         {
             moving = true;
@@ -58,7 +69,6 @@ public class PlayerController : MonoBehaviour
                 float realMoved = speed * Time.deltaTime;
                 endPosition2d = new Vector2(transform.position.x + realMoved, transform.position.y);
                 Debug.Log("Moving right");
-
             }
             else
             {
@@ -82,7 +92,8 @@ public class PlayerController : MonoBehaviour
             {
                 float realMoved = speed * Time.deltaTime;
                 endPosition2d = new Vector2(transform.position.x, transform.position.y - realMoved);
-                Debug.Log("Moving up");
+                
+                Debug.Log("Moving down");
             }
 
         }
@@ -118,6 +129,11 @@ public class PlayerController : MonoBehaviour
             Destroy(collision.gameObject);
             speed++;
         }
+        if (collision.CompareTag("Boost Explosion"))
+        {
+            Destroy(collision.gameObject);
+            radiusExplosion++;
+        }
     }
 
 
@@ -126,10 +142,12 @@ public class PlayerController : MonoBehaviour
     {
         if (movement.x == 0 && movement.y == 0)
         {
+            animator.SetBool("moving", false);
             return false;
         }
         else
         {
+            animator.SetBool("moving", true);
             return true;
         }
     }

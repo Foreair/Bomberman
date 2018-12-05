@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 82162879361659952}
   - component: {fileID: 114397141889665676}
   - component: {fileID: 114917119280427528}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bomb
   m_TagString: Bomb
   m_Icon: {fileID: 0}
@@ -197,7 +197,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifeTime: 3
-  maxBombDistance: 2
   explosionPrefab: {fileID: 1117538154586176, guid: 600a4d1f378fb0a45962f7b90de51817,
     type: 2}
 --- !u!114 &114917119280427528

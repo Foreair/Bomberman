@@ -8,7 +8,7 @@ public class Bomb : MonoBehaviour
 
 
     public float lifeTime = 3.0f;
-    public int maxBombDistance = 1;
+    private int maxBombDistance;
     public GameObject explosionPrefab;
     private Tilemap DWTilemap;
     private LayerMask Mask;
@@ -20,6 +20,7 @@ public class Bomb : MonoBehaviour
         Invoke("Explode", lifeTime);
         Mask = LayerMask.GetMask("Walls") | LayerMask.GetMask("Destroyable Walls") | LayerMask.GetMask("Background");
         mycollider = GetComponent<Collider2D>();
+        maxBombDistance = transform.parent.gameObject.GetComponent<PlayerController>().radiusExplosion;
         DWTilemap = GameObject.Find("Destroyable Walls").GetComponent<Tilemap>();
     }
 

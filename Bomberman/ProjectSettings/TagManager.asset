@@ -13,8 +13,8 @@ TagManager:
   - Power Up
   - Boost Speed
   - Bomb Power
-  - Penetration Power
   - PickUp
+  - Boost Explosion
   layers:
   - Default
   - TransparentFX
@@ -30,7 +30,7 @@ TagManager:
   - Destroyable Walls
   - Background
   - Power Ups
-  - 
+  - Bombs
   - 
   - 
   - 
