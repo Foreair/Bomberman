@@ -86,10 +86,11 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        UpdateAnimator();
         if (moving)
         {
             rb2d.MovePosition(endPosition2d);
-            Debug.Log("Velocity: x " + rb2d.velocity.x + ", y " + rb2d.velocity.y);
+            //Debug.Log("Velocity: x " + rb2d.velocity.x + ", y " + rb2d.velocity.y);
         }
     }
 
@@ -100,9 +101,6 @@ public class PlayerController : MonoBehaviour
 
         //movement.x = Input.GetAxis("Horizontal");
         //movement.y = Input.GetAxis("Vertical");
-
-        animator.SetFloat("x", movement.x);
-        animator.SetFloat("y", movement.y);
 
         moving = false;
 
@@ -180,8 +178,6 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-
-        UpdateAnimator();
     }
 
     private void UpdateMechanics()
@@ -199,8 +195,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Explosion"))
         {
-            Dead = true;
-            Destroy(gameObject);
+            Die();
         }
 
         if(collision.CompareTag("Bomb Power")){
@@ -219,7 +214,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
+    public void Die()
+    {
+        Dead = true;
+        Destroy(gameObject);
+    }
     private Vector3 SnapBomb(Vector3 pos)
     {
         Vector3 snappedPos = Vector3.zero;
@@ -255,7 +254,11 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetBool("moving", true);
         }
+
+        animator.SetFloat("x", movement.x);
+        animator.SetFloat("y", movement.y);
     }
+
     //[UnityEditor.MenuItem("Tools/Increase Speed")]
     //public static void IncreaseSpeed()
     //{
