@@ -92,7 +92,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Bomb") && playerData.CurrentBombs < playerData.maxBombs)
         {
 
-            GameObject instance = Instantiate(Bomb, SnapBomb(transform.position), Bomb.transform.rotation);
+            GameObject instance = Instantiate(Bomb, Utilities.SnapToCell(transform.position), Bomb.transform.rotation);
             instance.transform.parent = transform;
             playerData.CurrentBombs++;
         }
@@ -103,31 +103,6 @@ public class PlayerController : MonoBehaviour
         playerData.Dead = true;
         Destroy(gameObject);
     }
-    static public Vector3 SnapBomb(Vector3 pos)
-    {
-        Grid grid = FindObjectOfType<Grid>();
-        Vector3 snappedPos = Vector3.zero;
-        if (pos.x > 0)
-        {
-            snappedPos.x = (int)pos.x + (grid.cellSize.x / 2);
-        }
-        else
-        {
-            snappedPos.x = (int)pos.x - (grid.cellSize.x / 2);
-        }
-
-        if (pos.y > 0)
-        {
-            snappedPos.y = (int)pos.y + (grid.cellSize.y / 2);
-        }
-        else
-        {
-            snappedPos.y = (int)pos.y - (grid.cellSize.y / 2);
-        }
-
-        return snappedPos;
-    }
-
 
     private void UpdateAnimator()
     {

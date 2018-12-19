@@ -14,7 +14,7 @@ public class DeployBombAction : Action {
     {
         if(controller.creepData.currentBombs < controller.creepData.maxBombs)
         {
-            GameObject instance = Instantiate(controller.bomb, PlayerController.SnapBomb(controller.transform.position), Quaternion.identity);
+            GameObject instance = Instantiate(controller.bomb, Utilities.SnapToCell(controller.transform.position), Quaternion.identity);
             instance.transform.parent = controller.transform;
             controller.creepData.currentBombs++;
         }

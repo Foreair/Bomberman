@@ -26,10 +26,10 @@ public class PutBombDecision : Decision {
         Vector2 boxSize = new Vector2(controller.grid.cellSize.x * 0.9f, controller.grid.cellSize.y * 0.9f);
         float distance = 0.1f;
         LayerMask Mask = LayerMask.GetMask("Destroyable Walls");
-        RaycastHit2D hitUp = Physics2D.BoxCast(PlayerController.SnapBomb(controller.transform.position), boxSize, 0.0f, Vector2.up, distance, Mask);
-        RaycastHit2D hitDown = Physics2D.BoxCast(PlayerController.SnapBomb(controller.transform.position), boxSize, 0.0f, Vector2.down, distance, Mask);
-        RaycastHit2D hitRight = Physics2D.BoxCast(PlayerController.SnapBomb(controller.transform.position), boxSize, 0.0f, Vector2.right, distance, Mask);
-        RaycastHit2D hitLeft = Physics2D.BoxCast(PlayerController.SnapBomb(controller.transform.position), boxSize, 0.0f, Vector2.left, distance, Mask);
+        RaycastHit2D hitUp = Physics2D.BoxCast(Utilities.SnapToCell(controller.transform.position), boxSize, 0.0f, Vector2.up, distance, Mask);
+        RaycastHit2D hitDown = Physics2D.BoxCast(Utilities.SnapToCell(controller.transform.position), boxSize, 0.0f, Vector2.down, distance, Mask);
+        RaycastHit2D hitRight = Physics2D.BoxCast(Utilities.SnapToCell(controller.transform.position), boxSize, 0.0f, Vector2.right, distance, Mask);
+        RaycastHit2D hitLeft = Physics2D.BoxCast(Utilities.SnapToCell(controller.transform.position), boxSize, 0.0f, Vector2.left, distance, Mask);
 
         if(hitUp.collider != null || hitDown.collider != null || hitRight.collider != null || hitLeft.collider != null)
         {
