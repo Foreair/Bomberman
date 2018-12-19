@@ -12,5 +12,9 @@ MonoBehaviour:
   m_Name: DeployBombState
   m_EditorClassIdentifier: 
   sceneGizmoColor: {r: 1, g: 1, b: 1, a: 1}
-  actions: []
-  transitions: []
+  actions:
+  - {fileID: 11400000, guid: 90f704f5579ccd0469de9f2d88feadfe, type: 2}
+  transitions:
+  - decision: {fileID: 11400000, guid: 3a6ed19163011e5478e6e215fcde2bea, type: 2}
+    trueState: {fileID: 11400000, guid: 714c533b8c4679e4295d1ccd428f3e7a, type: 2}
+    falseState: {fileID: 11400000, guid: 714c533b8c4679e4295d1ccd428f3e7a, type: 2}

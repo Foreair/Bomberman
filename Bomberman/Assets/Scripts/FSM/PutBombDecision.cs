@@ -13,8 +13,11 @@ public class PutBombDecision : Decision {
 
     private bool CheckNearDestroyableWall(CreepFSM controller)
     {
-        if (Physics2D.OverlapCircle(controller.transform.position, 2.0f, LayerMask.GetMask("Bombs")) != null)
+
+        //If we have already set our maximum number of bombs, we dont enter into this state. Return false
+        if (controller.creepData.currentBombs == controller.creepData.maxBombs)
             return false;
+        
         Debug.DrawRay(controller.transform.position, Vector3.up, Color.red);
         Debug.DrawRay(controller.transform.position, Vector3.right, Color.red);
         Debug.DrawRay(controller.transform.position, Vector3.left, Color.red);
@@ -23,10 +26,10 @@ public class PutBombDecision : Decision {
         Vector2 boxSize = new Vector2(controller.grid.cellSize.x * 0.9f, controller.grid.cellSize.y * 0.9f);
         float distance = 0.1f;
         LayerMask Mask = LayerMask.GetMask("Destroyable Walls");
-        RaycastHit2D hitUp = Physics2D.BoxCast(controller.transform.position, boxSize, 0.0f, Vector2.up, distance, Mask);
-        RaycastHit2D hitDown = Physics2D.BoxCast(controller.transform.position, boxSize, 0.0f, Vector2.down, distance, Mask);
-        RaycastHit2D hitRight = Physics2D.BoxCast(controller.transform.position, boxSize, 0.0f, Vector2.right, distance, Mask);
-        RaycastHit2D hitLeft = Physics2D.BoxCast(controller.transform.position, boxSize, 0.0f, Vector2.left, distance, Mask);
+        RaycastHit2D hitUp = Physics2D.BoxCast(PlayerController.SnapBomb(controller.transform.position), boxSize, 0.0f, Vector2.up, distance, Mask);
+        RaycastHit2D hitDown = Physics2D.BoxCast(PlayerController.SnapBomb(controller.transform.position), boxSize, 0.0f, Vector2.down, distance, Mask);
+        RaycastHit2D hitRight = Physics2D.BoxCast(PlayerController.SnapBomb(controller.transform.position), boxSize, 0.0f, Vector2.right, distance, Mask);
+        RaycastHit2D hitLeft = Physics2D.BoxCast(PlayerController.SnapBomb(controller.transform.position), boxSize, 0.0f, Vector2.left, distance, Mask);
 
         if(hitUp.collider != null || hitDown.collider != null || hitRight.collider != null || hitLeft.collider != null)
         {

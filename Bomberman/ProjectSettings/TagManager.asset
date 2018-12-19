@@ -15,6 +15,7 @@ TagManager:
   - Bomb Power
   - PickUp
   - Boost Explosion
+  - Creep
   layers:
   - Default
   - TransparentFX
