@@ -122,7 +122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 14848586}
   m_Layer: 13
-  m_Name: Bomb Power
+  m_Name: Bomb Increasement
   m_TagString: Bomb Power
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4440,6 +4440,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1294759342254998, guid: a4ad1b5b0ff4e0540a067fbee560cee9, type: 2}
+      propertyPath: m_Name
+      value: Bomb Increasement
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4ad1b5b0ff4e0540a067fbee560cee9, type: 2}
   m_IsPrefabAsset: 0
@@ -4532,7 +4536,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1294759342254998, guid: a4ad1b5b0ff4e0540a067fbee560cee9, type: 2}
       propertyPath: m_Name
-      value: Bomb Power (1)
+      value: Bomb Increasement
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4ad1b5b0ff4e0540a067fbee560cee9, type: 2}

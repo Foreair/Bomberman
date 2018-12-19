@@ -73,7 +73,7 @@ public class Bomb : MonoBehaviour
         int maxBombDistance;
         if (gameObject.transform.parent.gameObject.CompareTag("Player"))
         {
-            maxBombDistance = gameObject.GetComponentInParent<PlayerController>().radiusExplosion;
+            maxBombDistance = gameObject.GetComponentInParent<PlayerController>().playerData.radiusExplosion;
             return maxBombDistance;
         }else if (gameObject.transform.parent.gameObject.CompareTag("Creep"))
         {
@@ -93,7 +93,7 @@ public class Bomb : MonoBehaviour
     {
         if (gameObject.transform.parent.gameObject.CompareTag("Player"))
         {
-            gameObject.GetComponentInParent<PlayerController>().CurrentBombs--;
+            gameObject.GetComponentInParent<PlayerController>().playerData.CurrentBombs--;
         }
         else if (gameObject.transform.parent.gameObject.CompareTag("Creep"))
         {
