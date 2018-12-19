@@ -4,7 +4,7 @@ using System.Collections;
 public class DestroySelf : MonoBehaviour
 {
     //Delay in seconds before destroying the gameobject
-    public float Delay = 3f;
+    public float Delay = 1f;
 
     void Start ()
     {

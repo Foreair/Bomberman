@@ -20,7 +20,7 @@ public class Bomb : MonoBehaviour
         Invoke("Explode", lifeTime);
         Mask = LayerMask.GetMask("Walls") | LayerMask.GetMask("Destroyable Walls") | LayerMask.GetMask("Background");
         mycollider = GetComponent<Collider2D>();
-        maxBombDistance = transform.parent.gameObject.GetComponent<PlayerController>().radiusExplosion;
+        maxBombDistance = GetMaxBombDistance(gameObject);
         DWTilemap = GameObject.Find("Destroyable Walls").GetComponent<Tilemap>();
     }
 
@@ -32,8 +32,7 @@ public class Bomb : MonoBehaviour
 
     private void Explode()
     {
-        PlayerController player = gameObject.GetComponentInParent<PlayerController>();
-        player.CurrentBombs--;
+        UpdateCurrentBombs(gameObject);
 
         GameObject explosionInstance = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         explosionInstance.transform.parent = transform;
@@ -66,6 +65,44 @@ public class Bomb : MonoBehaviour
             }
 
             yield return new WaitForSeconds(.05f);
+        }
+    }
+
+    private int GetMaxBombDistance(GameObject gameObject)
+    {
+        int maxBombDistance;
+        if (gameObject.transform.parent.gameObject.CompareTag("Player"))
+        {
+            maxBombDistance = gameObject.GetComponentInParent<PlayerController>().radiusExplosion;
+            return maxBombDistance;
+        }else if (gameObject.transform.parent.gameObject.CompareTag("Creep"))
+        {
+            maxBombDistance = gameObject.GetComponentInParent<CreepFSM>().creepData.radiusExplosion;
+        }
+        else
+        {
+            //Error code
+            maxBombDistance = -1;
+            Debug.Log("The parent of the current bomb deployed is not supported or has its tag uncorrectly set");
+        }
+
+        return maxBombDistance;
+    }
+
+    private void UpdateCurrentBombs(GameObject gameObject)
+    {
+        if (gameObject.transform.parent.gameObject.CompareTag("Player"))
+        {
+            gameObject.GetComponentInParent<PlayerController>().CurrentBombs--;
+        }
+        else if (gameObject.transform.parent.gameObject.CompareTag("Creep"))
+        {
+            gameObject.GetComponentInParent<CreepFSM>().creepData.currentBombs--;
+        }
+        else
+        {
+            //Error code
+            Debug.Log("The parent of the current bomb deployed is not supported or has its tag uncorrectly set.\n Update Current Bomb");
         }
     }
 }

@@ -699,7 +699,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &321760809
 Transform:
   m_ObjectHideFlags: 0
@@ -1769,7 +1769,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1562250147551750, guid: 99f9aca5d78b66942b4e285dfd0952c7, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99f9aca5d78b66942b4e285dfd0952c7, type: 2}
@@ -4133,7 +4133,6 @@ GameObject:
   - component: {fileID: 1415117943}
   - component: {fileID: 1415117942}
   - component: {fileID: 1415117941}
-  - component: {fileID: 1415117945}
   - component: {fileID: 1415117944}
   m_Layer: 0
   m_Name: Creep
@@ -4212,19 +4211,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd12787849cb6794c953cf407841946a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentState: 0
---- !u!114 &1415117945
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1415117940}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0173be2cdc35eb4b84c89653b2b93fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isCentered: 0
+  currentState: {fileID: 11400000, guid: 714c533b8c4679e4295d1ccd428f3e7a, type: 2}
+  remainState: {fileID: 11400000, guid: 714c533b8c4679e4295d1ccd428f3e7a, type: 2}
+  stateTimeElapsed: 0
+  creepData:
+    speed: 5
+    maxBombs: 1
+    currentBombs: 0
+    isMoving: 0
+    direction: {x: 0, y: 0}
+    horizontalMovement: 0
+  grid: {fileID: 0}
+  rb: {fileID: 0}
 --- !u!1 &1535247716
 GameObject:
   m_ObjectHideFlags: 0
@@ -4368,7 +4366,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 37753667a1e2aa947b9e1558d42e7b58, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

@@ -219,8 +219,9 @@ public class PlayerController : MonoBehaviour
         Dead = true;
         Destroy(gameObject);
     }
-    private Vector3 SnapBomb(Vector3 pos)
+    static public Vector3 SnapBomb(Vector3 pos)
     {
+        Grid grid = FindObjectOfType<Grid>();
         Vector3 snappedPos = Vector3.zero;
         if(pos.x > 0)
         {
