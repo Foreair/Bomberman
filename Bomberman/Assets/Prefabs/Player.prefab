@@ -147,13 +147,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c98fd27049aaae42aec8c6d8e23d58a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
-  maxBombs: 1
-  radiusExplosion: 1
-  currentBombs: 0
-  dead: 0
+  playerData:
+    lifes: 1
+    speed: 5
+    maxBombs: 1
+    radiusExplosion: 1
+    currentBombs: 0
+    dead: 0
+    moving: 0
+    direction: {x: 0, y: 0}
   Bomb: {fileID: 1058165843028846, guid: 08a3979b96976f1439f151ffc1ca3f43, type: 2}
-  grid: {fileID: 0}
+  offset: 0
 --- !u!212 &212536321988377060
 SpriteRenderer:
   m_ObjectHideFlags: 1

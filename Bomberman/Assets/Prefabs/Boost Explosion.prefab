@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4009706621582598}
   - component: {fileID: 212666315778651116}
   - component: {fileID: 61571648257935120}
+  - component: {fileID: 114768209612985100}
   m_Layer: 13
   m_Name: Boost Explosion
   m_TagString: Boost Explosion
@@ -66,6 +67,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.6666667, y: 0.6666667}
   m_EdgeRadius: 0
+--- !u!114 &114768209612985100
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1455583618800802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8f0d2a27e74d5140a7a37c0b9589ffc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212666315778651116
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -99,7 +111,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 868301317
-  m_SortingLayer: -5
+  m_SortingLayer: -6
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 7da83bbefcf29864a8b62aab3de2e8f7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

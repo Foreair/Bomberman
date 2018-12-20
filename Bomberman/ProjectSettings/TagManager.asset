@@ -12,10 +12,10 @@ TagManager:
   - Background
   - Power Up
   - Boost Speed
-  - Bomb Power
   - PickUp
   - Boost Explosion
   - Creep
+  - Boost Inventory Bombs
   layers:
   - Default
   - TransparentFX

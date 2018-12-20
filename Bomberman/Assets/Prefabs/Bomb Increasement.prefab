@@ -21,9 +21,10 @@ GameObject:
   - component: {fileID: 4193399764363256}
   - component: {fileID: 212139606761579316}
   - component: {fileID: 61190906509933568}
+  - component: {fileID: 114400698426407316}
   m_Layer: 13
-  m_Name: Bomb Power
-  m_TagString: Bomb Power
+  m_Name: Bomb Increasement
+  m_TagString: Boost Inventory Bombs
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -66,6 +67,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.6666667, y: 0.6666667}
   m_EdgeRadius: 0
+--- !u!114 &114400698426407316
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1294759342254998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 926d4b065a6d1ee4b991a93e2c57ec32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212139606761579316
 SpriteRenderer:
   m_ObjectHideFlags: 1
