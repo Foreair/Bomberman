@@ -9,6 +9,7 @@ public class CreepData {
     public float speed = 5.0f;
     public int maxBombs = 1;
     public int radiusExplosion = 1;
+    public bool isImmortal = false;
     [HideInInspector] public int currentBombs = 0;
     [HideInInspector] public bool dead = false;
 

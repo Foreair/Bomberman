@@ -192,7 +192,7 @@ public class ExploreAction : Action {
         float distance = 0.1f;
         RaycastHit2D hit = Physics2D.BoxCast(controller.transform.position, new Vector2(controller.grid.cellSize.x * 0.9f, controller.grid.cellSize.y * 0.9f), 0.0f, controller.creepData.direction, distance, Mask);
 
-        if (hit.collider == null || hit.collider.isTrigger)
+        if (hit.collider == null)
         {
             controller.creepData.isMoving = true;
             return true;

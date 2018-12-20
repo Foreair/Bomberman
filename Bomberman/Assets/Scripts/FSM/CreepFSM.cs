@@ -6,7 +6,7 @@ public class CreepFSM : MonoBehaviour
 {
 
     public State currentState;
-    public State remainState;
+    private State remainState;
     public float stateTimeElapsed;
     public GameObject bomb;
     public CreepData creepData;
@@ -21,12 +21,13 @@ public class CreepFSM : MonoBehaviour
         grid = GameObject.FindObjectOfType<Grid>();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator>();
-        aiActive = false;
+        aiActive = true;
     }
     private void Update()
     {
         if (!aiActive)
             return;
+        remainState = currentState;
         currentState.UpdateState(this);
         UpdateAnimator();
     }

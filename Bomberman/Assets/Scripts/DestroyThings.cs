@@ -6,13 +6,15 @@ public class DestroyThings : MonoBehaviour
     //Delay in seconds before destroying the gameobject
     public float Delay = 1f;
     public bool destroyPickUps;
+    public bool explodeBombs;
     private LayerMask Mask;
 
-    void Start ()
+    void Start()
     {
         Mask = LayerMask.GetMask("Power Ups");
-        Destroy (gameObject, Delay);
-        DestroyPickUps();
+        Destroy(gameObject, Delay);
+        if(destroyPickUps)
+            DestroyPickUps();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -20,13 +22,19 @@ public class DestroyThings : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             collision.gameObject.GetComponent<PlayerController>().Die();
-        }else if (collision.CompareTag("Creep"))
+        }
+        else if (collision.CompareTag("Creep"))
         {
-            collision.gameObject.GetComponent<CreepFSM>().creepData.dead = true;
-        }else if (collision.CompareTag("Bomb"))
+            if (!collision.gameObject.GetComponent<CreepFSM>().creepData.isImmortal)
+                collision.gameObject.GetComponent<CreepFSM>().creepData.dead = true;
+        }
+        else if (collision.CompareTag("Bomb"))
         {
-            collision.gameObject.GetComponent<Bomb>().CancelInvoke();
-            collision.gameObject.GetComponent<Bomb>().Invoke("Explode", 0.0f);
+            if (explodeBombs)
+            {
+                collision.gameObject.GetComponent<Bomb>().CancelInvoke();
+                collision.gameObject.GetComponent<Bomb>().Invoke("Explode", 0.0f);
+            }
         }
     }
 

@@ -52,13 +52,14 @@ public class Bomb : MonoBehaviour
 
     IEnumerator CreateExplosions(Vector2 direction)
     {
-        for (int i = 0; i <= maxBombDistance; i++)
+        for (int i = 1; i == maxBombDistance; i++)
         {
             RaycastHit2D hit2D = Physics2D.Raycast(transform.position, direction, i, Mask);
 
             if (!hit2D.collider)
             {
-                Instantiate(explosionPrefab, new Vector2(transform.position.x, transform.position.y) + (i * direction), Quaternion.identity);
+                GameObject explosionInstance = Instantiate(explosionPrefab, new Vector2(transform.position.x, transform.position.y) + (i * direction), Quaternion.identity);
+                explosionInstance.transform.parent = transform;
             }
             else if (hit2D.collider.CompareTag("Destroyable Walls"))
             {
