@@ -40,10 +40,21 @@ public class CreepFSM : MonoBehaviour
 
     public void ChangeState(State nextState)
     {
-        if (nextState != currentState)
+        if (nextState != remainState)
         {
             currentState = nextState;
         }
+    }
+
+    public bool CheckIfCountDownElapsed(float duration)
+    {
+        stateTimeElapsed += Time.deltaTime;
+        return (stateTimeElapsed >= duration);
+    }
+
+    private void OnExitState()
+    {
+        stateTimeElapsed = 0;
     }
 
     private void OnDrawGizmos()

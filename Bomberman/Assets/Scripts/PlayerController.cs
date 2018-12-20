@@ -93,8 +93,7 @@ public class PlayerController : MonoBehaviour
         {
 
             GameObject instance = Instantiate(Bomb, Utilities.SnapToCell(transform.position), Bomb.transform.rotation);
-            instance.transform.parent = transform;
-            playerData.CurrentBombs++;
+            instance.GetComponent<Bomb>().creator = gameObject;
         }
     }
 

@@ -6,10 +6,11 @@ using UnityEngine.Tilemaps;
 public class Bomb : MonoBehaviour
 {
 
-
     public float lifeTime = 3.0f;
-    private int maxBombDistance;
     public GameObject explosionPrefab;
+
+    [HideInInspector] public GameObject creator;
+    private int maxBombDistance;
     private Tilemap DWTilemap;
     private LayerMask Mask;
     private Collider2D mycollider;
@@ -17,11 +18,13 @@ public class Bomb : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        UpdateCurrentBombs(false);
         Invoke("Explode", lifeTime);
         Mask = LayerMask.GetMask("Walls") | LayerMask.GetMask("Destroyable Walls") | LayerMask.GetMask("Background");
         mycollider = GetComponent<Collider2D>();
         maxBombDistance = GetMaxBombDistance(gameObject);
         DWTilemap = GameObject.Find("Destroyable Walls").GetComponent<Tilemap>();
+
     }
 
     // Update is called once per frame
@@ -32,7 +35,7 @@ public class Bomb : MonoBehaviour
 
     private void Explode()
     {
-        UpdateCurrentBombs(gameObject);
+        UpdateCurrentBombs(true);
 
         GameObject explosionInstance = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         explosionInstance.transform.parent = transform;
@@ -71,13 +74,13 @@ public class Bomb : MonoBehaviour
     private int GetMaxBombDistance(GameObject gameObject)
     {
         int maxBombDistance;
-        if (gameObject.transform.parent.gameObject.CompareTag("Player"))
+        if (creator.CompareTag("Player"))
         {
-            maxBombDistance = gameObject.GetComponentInParent<PlayerController>().playerData.radiusExplosion;
+            maxBombDistance = creator.GetComponent<PlayerController>().playerData.radiusExplosion;
             return maxBombDistance;
-        }else if (gameObject.transform.parent.gameObject.CompareTag("Creep"))
+        }else if (creator.CompareTag("Creep"))
         {
-            maxBombDistance = gameObject.GetComponentInParent<CreepFSM>().creepData.radiusExplosion;
+            maxBombDistance = creator.GetComponent<CreepFSM>().creepData.radiusExplosion;
         }
         else
         {
@@ -89,15 +92,29 @@ public class Bomb : MonoBehaviour
         return maxBombDistance;
     }
 
-    private void UpdateCurrentBombs(GameObject gameObject)
+    private void UpdateCurrentBombs(bool hasExploded)
     {
-        if (gameObject.transform.parent.gameObject.CompareTag("Player"))
+        if (creator.CompareTag("Player"))
         {
-            gameObject.GetComponentInParent<PlayerController>().playerData.CurrentBombs--;
+            if (hasExploded)
+            {
+                creator.GetComponent<PlayerController>().playerData.CurrentBombs--;
+            }
+            else
+            {
+                creator.GetComponent<PlayerController>().playerData.CurrentBombs++;
+            }
         }
-        else if (gameObject.transform.parent.gameObject.CompareTag("Creep"))
+        else if (creator.CompareTag("Creep"))
         {
-            gameObject.GetComponentInParent<CreepFSM>().creepData.currentBombs--;
+            if (hasExploded)
+            {
+                creator.GetComponent<CreepFSM>().creepData.currentBombs--;
+            }
+            else
+            {
+                creator.GetComponent<CreepFSM>().creepData.currentBombs++;
+            }
         }
         else
         {
