@@ -14,14 +14,14 @@ public class CreepFSM : MonoBehaviour
     [HideInInspector] public Rigidbody2D rb;
     private Animator animator;
 
-    private bool aiActive;
+    public bool aiActive;
 
     private void Start()
     {
         grid = GameObject.FindObjectOfType<Grid>();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator>();
-        aiActive = true;
+        aiActive = false;
     }
     private void Update()
     {
