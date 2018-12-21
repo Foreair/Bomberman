@@ -17,14 +17,20 @@ public class PutBombDecision : Decision {
         //If we have already set our maximum number of bombs, we dont enter into this state. Return false
         if (controller.creepData.currentBombs == controller.creepData.maxBombs)
             return false;
-        
+
+        Vector2 boxSize = new Vector2(controller.grid.cellSize.x * 0.9f, controller.grid.cellSize.y * 0.9f);
+        float distance = 0.1f;
+        LayerMask MaskBomb = LayerMask.GetMask("Bombs");
+        Collider2D col = Physics2D.OverlapBox(Utilities.SnapToCell(controller.transform.position), boxSize, 0.0f, MaskBomb);
+        //If there's already a bomb here, return false
+        if (col)
+            return false;
+
         //Debug.DrawLine(controller.transform.position, controller.transform.position + (Vector3.up * 0.1f), Color.red);
         //Debug.DrawLine(controller.transform.position, controller.transform.position + (Vector3.right * 0.1f), Color.red);
         //Debug.DrawLine(controller.transform.position, controller.transform.position + (Vector3.left * 0.1f), Color.red);
         //Debug.DrawLine(controller.transform.position, controller.transform.position + (Vector3.down * 0.1f), Color.red);
 
-        Vector2 boxSize = new Vector2(controller.grid.cellSize.x * 0.9f, controller.grid.cellSize.y * 0.9f);
-        float distance = 0.1f;
         LayerMask Mask = LayerMask.GetMask("Destroyable Walls");
         RaycastHit2D hitUp = Physics2D.BoxCast(Utilities.SnapToCell(controller.transform.position), boxSize, 0.0f, Vector2.up, distance, Mask);
         RaycastHit2D hitDown = Physics2D.BoxCast(Utilities.SnapToCell(controller.transform.position), boxSize, 0.0f, Vector2.down, distance, Mask);
