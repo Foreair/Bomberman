@@ -18,10 +18,10 @@ public class PutBombDecision : Decision {
         if (controller.creepData.currentBombs == controller.creepData.maxBombs)
             return false;
         
-        Debug.DrawRay(controller.transform.position, Vector3.up, Color.red);
-        Debug.DrawRay(controller.transform.position, Vector3.right, Color.red);
-        Debug.DrawRay(controller.transform.position, Vector3.left, Color.red);
-        Debug.DrawRay(controller.transform.position, Vector3.down, Color.red);
+        //Debug.DrawLine(controller.transform.position, controller.transform.position + (Vector3.up * 0.1f), Color.red);
+        //Debug.DrawLine(controller.transform.position, controller.transform.position + (Vector3.right * 0.1f), Color.red);
+        //Debug.DrawLine(controller.transform.position, controller.transform.position + (Vector3.left * 0.1f), Color.red);
+        //Debug.DrawLine(controller.transform.position, controller.transform.position + (Vector3.down * 0.1f), Color.red);
 
         Vector2 boxSize = new Vector2(controller.grid.cellSize.x * 0.9f, controller.grid.cellSize.y * 0.9f);
         float distance = 0.1f;

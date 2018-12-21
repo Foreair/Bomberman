@@ -152,7 +152,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4680164212485910, guid: b2728c42e3494e14f944b44ad9e156c3, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -7.5
+      value: -7.52
       objectReference: {fileID: 0}
     - target: {fileID: 4680164212485910, guid: b2728c42e3494e14f944b44ad9e156c3, type: 2}
       propertyPath: m_LocalPosition.y
@@ -181,6 +181,11 @@ Prefab:
     - target: {fileID: 4680164212485910, guid: b2728c42e3494e14f944b44ad9e156c3, type: 2}
       propertyPath: m_RootOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114104571117658432, guid: b2728c42e3494e14f944b44ad9e156c3,
+        type: 2}
+      propertyPath: offset
+      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2728c42e3494e14f944b44ad9e156c3, type: 2}
@@ -1538,7 +1543,7 @@ RectTransform:
   m_Children:
   - {fileID: 1045176548}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1750,7 +1755,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4307446022244390, guid: 99f9aca5d78b66942b4e285dfd0952c7, type: 2}
       propertyPath: m_RootOrder
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1562250147551750, guid: 99f9aca5d78b66942b4e285dfd0952c7, type: 2}
       propertyPath: m_Name
@@ -1758,7 +1763,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1562250147551750, guid: 99f9aca5d78b66942b4e285dfd0952c7, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99f9aca5d78b66942b4e285dfd0952c7, type: 2}
@@ -4137,7 +4142,7 @@ Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1415117940}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -4201,19 +4206,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: {fileID: 11400000, guid: 714c533b8c4679e4295d1ccd428f3e7a, type: 2}
-  remainState: {fileID: 11400000, guid: 714c533b8c4679e4295d1ccd428f3e7a, type: 2}
   stateTimeElapsed: 0
   bomb: {fileID: 1058165843028846, guid: 08a3979b96976f1439f151ffc1ca3f43, type: 2}
   creepData:
     speed: 5
     maxBombs: 1
     radiusExplosion: 1
+    isImmortal: 1
     currentBombs: 0
+    dead: 0
     isMoving: 0
     direction: {x: 0, y: 0}
     horizontalMovement: 0
   grid: {fileID: 0}
   rb: {fileID: 0}
+  aiActive: 0
 --- !u!1 &1535247716
 GameObject:
   m_ObjectHideFlags: 0
@@ -4482,7 +4489,7 @@ Transform:
   - {fileID: 321760809}
   - {fileID: 2092037555}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1904158257
 Prefab:

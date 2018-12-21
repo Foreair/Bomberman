@@ -8,12 +8,13 @@ public class ExploreAction : Action {
     private bool isCentered;
     private float currentMoved;
 
-    private LayerMask Mask;
+    private LayerMask Mask, Mask2;
     private Vector2 endPos;
 
     private void Awake()
     {
-        Mask = LayerMask.GetMask("Walls") | LayerMask.GetMask("Destroyable Walls") | LayerMask.GetMask("Background") | LayerMask.GetMask("Bombs");
+        Mask = LayerMask.GetMask("Walls") | LayerMask.GetMask("Destroyable Walls") | LayerMask.GetMask("Background");
+        Mask2 = LayerMask.GetMask("Bombs");
         isCentered = false;
     }
     public override void Act(CreepFSM controller)
@@ -155,7 +156,7 @@ public class ExploreAction : Action {
     //Choses a random direction inbetween all 4 axis
     private void ChooseRandomDirection(CreepFSM controller)
     {
-        Debug.Log("Changing pos\n Current position x: " + controller.transform.position.x + " y: " + controller.transform.position.y);
+        //Debug.Log("Changing pos\n Current position x: " + controller.transform.position.x + " y: " + controller.transform.position.y);
 
         //We choose a random direction to move
         int dir = Random.Range(1, 5);
@@ -188,11 +189,13 @@ public class ExploreAction : Action {
     //It also updates the IsMoving boolean
     private bool CheckCollisions(CreepFSM controller)
     {
-        //Set IsMoving
-        float distance = 0.1f;
-        RaycastHit2D hit = Physics2D.BoxCast(controller.transform.position, new Vector2(controller.grid.cellSize.x * 0.9f, controller.grid.cellSize.y * 0.9f), 0.0f, controller.creepData.direction, distance, Mask);
+        float distance = 0.25f;
+        //RaycastHit2D hit = Physics2D.BoxCast(controller.transform.position, new Vector2(controller.grid.cellSize.x * 0.9f, controller.grid.cellSize.y * 0.9f), 0.0f, controller.creepData.direction, distance, Mask);
+        //RaycastHit2D hitBomb = Physics2D.BoxCast(controller.transform.position, new Vector2(controller.grid.cellSize.x * 0.9f, controller.grid.cellSize.y * 0.9f), 0.0f, controller.creepData.direction, distance, Mask2);
+        RaycastHit2D hit = Physics2D.BoxCast(controller.transform.position, controller.boxSize, 0.0f, controller.creepData.direction, distance, Mask);
+        RaycastHit2D hitBomb = Physics2D.BoxCast(controller.transform.position, controller.boxSize, 0.0f, controller.creepData.direction, distance, Mask2);
 
-        if (hit.collider == null)
+        if (!hit.collider && (!hitBomb.collider || hitBomb.collider.isTrigger))
         {
             controller.creepData.isMoving = true;
             return true;
@@ -208,7 +211,8 @@ public class ExploreAction : Action {
     //True if centered. False if not.
     private bool IsCentered(CreepFSM controller, Vector3 pos)
     {
-        float threshold = 0.04f;
+        //Max threshold Range 0.18. Best value: 0.1
+        float threshold = 0.1f;
         int x = (int)pos.x;
         int y = (int)pos.y;
 
@@ -231,6 +235,7 @@ public class ExploreAction : Action {
     {
 
         Vector2 localEndPos = new Vector2(controller.creepData.direction.x * currentMoved, controller.creepData.direction.y * currentMoved);
+        //Debug.Log(localEndPos.x + " " + localEndPos.y);
         endPos = new Vector2(controller.transform.position.x + localEndPos.x, controller.transform.position.y + localEndPos.y);
         controller.rb.MovePosition(endPos);
 

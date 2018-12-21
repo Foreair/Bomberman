@@ -9,8 +9,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 55e31be45cb43f948b8da1911a6bba9a, type: 3}
-  m_Name: Die
+  m_Name: DieState
   m_EditorClassIdentifier: 
-  sceneGizmoColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  actions: []
+  sceneGizmoColor: {r: 1, g: 0, b: 0, a: 1}
+  actions:
+  - {fileID: 11400000, guid: 1db5e408fd84edb4393556b4cffe8239, type: 2}
   transitions: []

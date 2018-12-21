@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 boxSize;
     [Tooltip("Distance measuring how close the player can be against the environment")]
     public float offset;
-    private LayerMask Mask;
+    private LayerMask Mask, Mask2;
 
     //Animator
     private Animator animator;
@@ -34,9 +34,10 @@ public class PlayerController : MonoBehaviour
         mycollider = GetComponent<BoxCollider2D>();
         animator = GetComponentInChildren<Animator>();
         Mask = LayerMask.GetMask("Walls") | LayerMask.GetMask("Destroyable Walls") | LayerMask.GetMask("Background");
+        Mask2 = LayerMask.GetMask("Bombs");
         boxSize = new Vector2(mycollider.bounds.extents.x * 2, mycollider.bounds.extents.y * 2);
         currentMoved = 0.0f;
-        offset = 0.1f;
+        offset = 0.15f;
     }
 
 
@@ -73,17 +74,18 @@ public class PlayerController : MonoBehaviour
             return;
         }
         RaycastHit2D hit = Physics2D.BoxCast(transform.position, boxSize, 0.0f, playerData.direction, offset, Mask);
+        RaycastHit2D hitBomb = Physics2D.BoxCast(transform.position, boxSize, 0.0f, playerData.direction, offset, Mask2);
 
-        if (hit.collider)
-        {
-            playerData.moving = false;
-            return;
-        }
-        else
+        if (!hit.collider && (!hitBomb.collider || hitBomb.collider.isTrigger))
         {
             playerData.moving = true;
             Vector2 localEndPos = new Vector2(playerData.direction.x * currentMoved, playerData.direction.y * currentMoved);
             endPosition2d = new Vector2(transform.position.x + localEndPos.x, transform.position.y + localEndPos.y);
+        }
+        else
+        {
+            playerData.moving = false;
+            return;
         }
     }
 

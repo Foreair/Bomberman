@@ -21,9 +21,9 @@ GameObject:
   - component: {fileID: 4505994210098466}
   - component: {fileID: 212123555576993080}
   - component: {fileID: 50450149764180494}
-  - component: {fileID: 61580331818357630}
+  - component: {fileID: 61074469152045964}
   - component: {fileID: 114397141889665676}
-  - component: {fileID: 114917119280427528}
+  - component: {fileID: 114470282937350238}
   - component: {fileID: 82637693706600050}
   m_Layer: 14
   m_Name: Bomb
@@ -52,7 +52,7 @@ Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1058165843028846}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -64,8 +64,8 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 3
---- !u!61 &61580331818357630
+  m_Constraints: 7
+--- !u!61 &61074469152045964
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -88,7 +88,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.5, y: 1.5}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!82 &82637693706600050
 AudioSource:
@@ -200,7 +200,7 @@ MonoBehaviour:
   explosionPrefab: {fileID: 1117538154586176, guid: 600a4d1f378fb0a45962f7b90de51817,
     type: 2}
   creator: {fileID: 0}
---- !u!114 &114917119280427528
+--- !u!114 &114470282937350238
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}

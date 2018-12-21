@@ -13,7 +13,7 @@ public class Bomb : MonoBehaviour
     private int maxBombDistance;
     private Tilemap DWTilemap;
     private LayerMask Mask;
-    private Collider2D mycollider;
+    private Collider2D myCollider;
 
     // Use this for initialization
     void Start()
@@ -21,7 +21,7 @@ public class Bomb : MonoBehaviour
         UpdateCurrentBombs(false);
         Invoke("Explode", lifeTime);
         Mask = LayerMask.GetMask("Walls") | LayerMask.GetMask("Destroyable Walls") | LayerMask.GetMask("Background");
-        mycollider = GetComponent<Collider2D>();
+        myCollider = GetComponent<BoxCollider2D>();
         maxBombDistance = GetMaxBombDistance(gameObject);
         DWTilemap = GameObject.Find("Destroyable Walls").GetComponent<Tilemap>();
 
@@ -46,7 +46,7 @@ public class Bomb : MonoBehaviour
         StartCoroutine(CreateExplosions(Vector2.left));
 
         GetComponent<SpriteRenderer>().enabled = false;
-        mycollider.enabled = false;
+        myCollider.enabled = false;
         Destroy(gameObject, .3f);
     }
 
