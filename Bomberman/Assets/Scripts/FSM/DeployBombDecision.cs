@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu (menuName ="FSM/Decisions/PutBomb")]
-public class PutBombDecision : Decision {
+public class DeployBombDecision : Decision {
 
     public override bool Decide(CreepFSM controller)
     {
