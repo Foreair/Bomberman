@@ -35,6 +35,7 @@ public class Bomb : MonoBehaviour
 
     private void Explode()
     {
+        maxBombDistance = GetMaxBombDistance(gameObject);
         UpdateCurrentBombs(true);
 
         GameObject explosionInstance = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
@@ -52,7 +53,7 @@ public class Bomb : MonoBehaviour
 
     IEnumerator CreateExplosions(Vector2 direction)
     {
-        for (int i = 1; i == maxBombDistance; i++)
+        for (int i = 1; i <= maxBombDistance; i++)
         {
             RaycastHit2D hit2D = Physics2D.Raycast(transform.position, direction, i, Mask);
 
@@ -78,7 +79,6 @@ public class Bomb : MonoBehaviour
         if (creator.CompareTag("Player"))
         {
             maxBombDistance = creator.GetComponent<PlayerController>().playerData.radiusExplosion;
-            return maxBombDistance;
         }else if (creator.CompareTag("Creep"))
         {
             maxBombDistance = creator.GetComponent<CreepFSM>().creepData.radiusExplosion;

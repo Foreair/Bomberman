@@ -4220,7 +4220,9 @@ MonoBehaviour:
     horizontalMovement: 0
   grid: {fileID: 0}
   rb: {fileID: 0}
-  aiActive: 0
+  aiActive: 1
+  myCollider: {fileID: 0}
+  boxSize: {x: 0, y: 0}
 --- !u!1 &1535247716
 GameObject:
   m_ObjectHideFlags: 0
