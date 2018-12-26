@@ -175,8 +175,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Delay: 0.55
-  destroyPickUps: 0
-  explodeBombs: 0
+  destroyPickUps: 1
+  explodeBombs: 1
 --- !u!212 &212961256421975578
 SpriteRenderer:
   m_ObjectHideFlags: 1

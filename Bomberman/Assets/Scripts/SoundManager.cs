@@ -5,6 +5,8 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour {
 
     public AudioSource sfxSource, musicSource;
+    
+    //singleton
     public static SoundManager instance = null;
 
     public float lowPitchRange = 0.95f;

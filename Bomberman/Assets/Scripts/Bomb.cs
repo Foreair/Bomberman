@@ -25,7 +25,9 @@ public class Bomb : MonoBehaviour
         Mask = LayerMask.GetMask("Walls") | LayerMask.GetMask("Destroyable Walls") | LayerMask.GetMask("Background");
         myCollider = GetComponent<BoxCollider2D>();
         maxBombDistance = GetMaxBombDistance(gameObject);
-        DWTilemap = GameObject.Find("Destroyable Walls").GetComponent<Tilemap>();
+        var DW = GameObject.Find("Destroyable Walls");
+        if (DW)
+            DWTilemap = GameObject.Find("Destroyable Walls").GetComponent<Tilemap>();
 
     }
 
