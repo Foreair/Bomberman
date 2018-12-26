@@ -6,6 +6,7 @@ using UnityEngine.Tilemaps;
 public class PlayerController : MonoBehaviour
 {
     public PlayerData playerData;
+    public PlayerInput playerInput;
 
     [Space]
     [Header("Miscellaneous")]
@@ -62,8 +63,8 @@ public class PlayerController : MonoBehaviour
     private void UpdateMovement()
     {
         currentMoved = Time.deltaTime * playerData.speed;
-        playerData.direction.x = Input.GetAxisRaw("Horizontal");
-        playerData.direction.y = Input.GetAxisRaw("Vertical");
+        playerData.direction.x = Input.GetAxisRaw(playerInput.horizontalAxis);
+        playerData.direction.y = Input.GetAxisRaw(playerInput.verticalAxis);
 
         //movement.x = Input.GetAxis("Horizontal");
         //movement.y = Input.GetAxis("Vertical");
@@ -91,7 +92,7 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateMechanics()
     {
-        if (Input.GetButtonDown("Bomb") && playerData.CurrentBombs < playerData.maxBombs)
+        if (Input.GetButtonDown(playerInput.bombButton) && playerData.CurrentBombs < playerData.maxBombs)
         {
 
             GameObject instance = Instantiate(Bomb, Utilities.SnapToCell(transform.position), Bomb.transform.rotation);
