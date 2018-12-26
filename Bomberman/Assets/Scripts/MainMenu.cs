@@ -5,9 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour {
 
-    public void PlayGame()
+    public void PlayGameSinglePlayer()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene("1P Level1");
+    }
+
+    public void PlayGameMultiPlayer()
+    {
+        SceneManager.LoadScene("2P Level1");
     }
 
     public void QuitGame()

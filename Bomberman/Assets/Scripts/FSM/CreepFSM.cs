@@ -25,7 +25,7 @@ public class CreepFSM : MonoBehaviour
         grid = GameObject.FindObjectOfType<Grid>();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator>();
-        aiActive = false;
+        aiActive = true;
     }
     private void Update()
     {
@@ -67,6 +67,8 @@ public class CreepFSM : MonoBehaviour
         if (currentState != null)
         {
             gameObject.GetComponentInChildren<SpriteRenderer>().color = currentState.sceneGizmoColor;
+            //Gizmos.DrawWireCube(transform.position, new Vector2(5,5));
+
         }
     }
 

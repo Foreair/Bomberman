@@ -12,5 +12,9 @@ MonoBehaviour:
   m_Name: FleeFromBombState
   m_EditorClassIdentifier: 
   sceneGizmoColor: {r: 0, g: 0.09226475, b: 0.7924528, a: 1}
-  actions: []
-  transitions: []
+  actions:
+  - {fileID: 11400000, guid: 715edaf842921934182cac19447feb8f, type: 2}
+  transitions:
+  - decision: {fileID: 11400000, guid: cd98245dbd059e340bbacdcf14d06494, type: 2}
+    trueState: {fileID: 11400000, guid: 714c533b8c4679e4295d1ccd428f3e7a, type: 2}
+    falseState: {fileID: 11400000}

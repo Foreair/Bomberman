@@ -14,12 +14,14 @@ public class Bomb : MonoBehaviour
     private Tilemap DWTilemap;
     private LayerMask Mask;
     private Collider2D myCollider;
+    private float timeToExplode;
 
     // Use this for initialization
     void Start()
     {
         UpdateCurrentBombs(false);
         Invoke("Explode", lifeTime);
+        timeToExplode = lifeTime;
         Mask = LayerMask.GetMask("Walls") | LayerMask.GetMask("Destroyable Walls") | LayerMask.GetMask("Background");
         myCollider = GetComponent<BoxCollider2D>();
         maxBombDistance = GetMaxBombDistance(gameObject);
@@ -30,7 +32,7 @@ public class Bomb : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        timeToExplode -= Time.deltaTime;
     }
 
     private void Explode()
