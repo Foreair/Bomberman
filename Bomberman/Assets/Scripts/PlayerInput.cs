@@ -5,8 +5,16 @@ using UnityEngine;
 [System.Serializable]
 public class PlayerInput {
 
-    public string horizontalAxis = "Horizontal_P1";
-    public string verticalAxis = "Vertical_P1";
-    public string bombButton = "Bomb_P1";
+    [HideInInspector] public int PlayerNumber;
+    public string horizontalAxis;
+    public string verticalAxis;
+    public string bombButton;
     public static string pauseButton = "Pause";
+
+    public void Initialize()
+    {
+        horizontalAxis = "Horizontal_P" + PlayerNumber;
+        verticalAxis = "Vertical_P" + PlayerNumber;
+        bombButton = "Bomb_P" + PlayerNumber;
+    }
 }

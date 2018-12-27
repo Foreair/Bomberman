@@ -103,7 +103,8 @@ public class PlayerController : MonoBehaviour
     public void Die()
     {
         playerData.Dead = true;
-        Destroy(gameObject);
+        gameObject.SetActive(false);
+        //Destroy(gameObject);
     }
 
     private void UpdateAnimator()
