@@ -8,18 +8,29 @@ public class PlayerData{
     //Public player variables
     [Header("Player Variables")]
     [Tooltip("Player's current number of lifes")]
-    public int lifes = 1;
+    public int lifes;
     [Tooltip("Player's movement speed")]
-    public float speed = 5.0f;
+    public float speed;
     [Tooltip("Maximum number of bombs the player can deploy")]
-    public int maxBombs = 1;
+    public int maxBombs;
     [Tooltip("Radius of the explosion in each axis")]
-    public int radiusExplosion = 1;
+    public int radiusExplosion;
 
-    [HideInInspector] public int currentBombs = 0;
-    [HideInInspector] public bool dead = false;
-    [HideInInspector] public bool moving = false;
-    [HideInInspector] public Vector2 direction = Vector2.zero;
+    [HideInInspector] public int currentBombs;
+    [HideInInspector] public bool dead;
+    [HideInInspector] public bool moving;
+    [HideInInspector] public Vector2 direction;
+
+    public void InitializeData()
+    {
+        speed = 5.0f;
+        maxBombs = 1;
+        radiusExplosion = 1;
+        currentBombs = 0;
+        dead = false;
+        moving = false;
+        direction = Vector2.zero;
+    }
 
     public bool Dead
     {

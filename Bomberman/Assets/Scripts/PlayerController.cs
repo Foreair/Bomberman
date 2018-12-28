@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour
     [Header("Miscellaneous")]
     [Tooltip("Prefab containing the bomb")]
     public GameObject Bomb;
-    //[HideInInspector]
 
     //Private player variables
     private Vector2 endPosition2d;
@@ -62,7 +61,6 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateMovement()
     {
-        currentMoved = Time.deltaTime * playerData.speed;
         playerData.direction.x = Input.GetAxisRaw(playerInput.horizontalAxis);
         playerData.direction.y = Input.GetAxisRaw(playerInput.verticalAxis);
 
@@ -72,7 +70,12 @@ public class PlayerController : MonoBehaviour
         if(playerData.direction.magnitude == 0)
         {
             playerData.moving = false;
+            currentMoved = 0.0f;
             return;
+        }
+        else
+        {
+            currentMoved = Time.deltaTime * playerData.speed;
         }
         RaycastHit2D hit = Physics2D.BoxCast(transform.position, boxSize, 0.0f, playerData.direction, offset, Mask);
         RaycastHit2D hitBomb = Physics2D.BoxCast(transform.position, boxSize, 0.0f, playerData.direction, offset, Mask2);

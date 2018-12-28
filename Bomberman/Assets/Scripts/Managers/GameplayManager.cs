@@ -10,19 +10,21 @@ public class GameplayManager : MonoBehaviour {
 
     public static GameplayManager instance = null;
 
-    public int roundsToWin = 2;                 // The number of rounds a single player has to win to win the game.
+    public int roundsToWin = 1;                 // The number of rounds a single player has to win to win the game.
     public float startDelay = 3f;               // The delay between the start of RoundStarting and RoundPlaying phases.
     public float endDelay = 3f;                 // The delay between the end of RoundPlaying and RoundEnding phases.
     public GameObject playerPrefab;             // Reference to the prefab the players will control.
     public PlayerManager[] players;             // A collection of managers for enabling and disabling different aspects of the players.
+    public GameObject mapPrefab;                //Reference to the map. Each Map is represented by its grid containing different tilemaps.
 
     private int level;                          // Which level the game is currently on.
     private int roundNumber;                    // Which round the game is currently on.
-    private Text messageText;               // Reference to the overlay Text to display winning text, etc.
+    private Text messageText;                   // Reference to the overlay Text to display winning text, etc.
     private WaitForSeconds startWait;           // Used to have a delay whilst the round starts.
     private WaitForSeconds endWait;             // Used to have a delay whilst the round or game ends.
     private PlayerManager roundWinner;          // Reference to the winner of the current round.  Used to make an announcement of who won.
     private PlayerManager gameWinner;           // Reference to the winner of the game.  Used to make an announcement of who won.
+    private GameObject currentMap;
 
     private void Start()
     {
@@ -66,21 +68,11 @@ public class GameplayManager : MonoBehaviour {
         endWait = new WaitForSeconds(endDelay);
         messageText = GameObject.Find("Text").GetComponent<Text>();
 
-        //GetSpawnTransforms();
         SpawnMultiplayerMode();
 
-        // Once the tanks have been created and the camera is using them as targets, start the game.
+        // Once the players have been created, start the game.
         StartCoroutine(GameLoopMP());
     }
-
-    //private void GetSpawnTransforms()
-    //{
-    //    for (int i = 0; i < players.Length; i++)
-    //    {
-    //        string name = "SpawnPlayer" + (i + 1);
-    //        players[i].spawnPoint = GameObject.Find(name).transform;
-    //    }
-    //}
 
     private void SpawnMultiplayerMode()
     {
@@ -90,7 +82,7 @@ public class GameplayManager : MonoBehaviour {
             // ... create them, set their player number and references needed for control.
             players[i].instance = Instantiate(playerPrefab, players[i].spawnPoint.position, players[i].spawnPoint.rotation) as GameObject;
             players[i].playerNumber = i + 1;
-            players[i].Initialize();
+            players[i].Setup();
         }
     }
 
@@ -123,7 +115,8 @@ public class GameplayManager : MonoBehaviour {
     private IEnumerator RoundStarting()
     {
         // As soon as the round starts reset the players and/or enemies and make sure they can't move.
-        ResetTransforms();
+        ResetUnits();
+        ResetMap();
         DisableControl();
 
         // Increment the round number and display text showing the players what round it is.
@@ -167,7 +160,7 @@ public class GameplayManager : MonoBehaviour {
         if (roundWinner != null)
             roundWinner.wins++;
 
-        // Now the winner's score has been incremented, see if someone has one the game.
+        // Now the winner's score has been incremented, see if someone has won the game.
         gameWinner = GetGameWinner();
 
         // Get a message based on the scores and whether or not there is a game winner and display it.
@@ -258,12 +251,19 @@ public class GameplayManager : MonoBehaviour {
 
 
     // This function is used to turn all the players and/or enemies back on and reset their positions and properties.
-    private void ResetTransforms()
+    private void ResetUnits()
     {
         foreach (var player in players)
         {
             player.Reset();
         }
+    }
+
+    private void ResetMap()
+    {
+        if(currentMap)
+            Destroy(currentMap);
+        currentMap = Instantiate(mapPrefab);
     }
 
     private void DisableControl()
@@ -281,5 +281,4 @@ public class GameplayManager : MonoBehaviour {
             player.EnableControl();
         }
     }
-
 }

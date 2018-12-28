@@ -17,14 +17,16 @@ public class PlayerManager {
     private PlayerInput playerInput;
     private PlayerData playerData;
 
-    public void Initialize()
+    public void Setup()
     {
         playerController = instance.GetComponent<PlayerController>();
         playerInput = playerController.playerInput;
         playerData = playerController.playerData;
 
         playerInput.PlayerNumber = playerNumber;
-        playerInput.Initialize();
+        playerInput.InitializeInput();
+        playerData.InitializeData();
+
         coloredPlayerText = "<color=#" + ColorUtility.ToHtmlStringRGB(playerColor) + ">PLAYER " + playerColor + "</color>";
         SpriteRenderer[] renderers = instance.GetComponentsInChildren<SpriteRenderer>();
 
@@ -49,8 +51,12 @@ public class PlayerManager {
         instance.transform.position = spawnPoint.position;
         instance.transform.rotation = spawnPoint.rotation;
 
+        playerData.InitializeData();
+        playerInput.InitializeInput();
+
         //Checkear si esto es útil y por qué
         instance.SetActive(false);
         instance.SetActive(true);
     }
+
 }

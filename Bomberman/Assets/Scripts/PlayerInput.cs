@@ -11,7 +11,7 @@ public class PlayerInput {
     public string bombButton;
     public static string pauseButton = "Pause";
 
-    public void Initialize()
+    public void InitializeInput()
     {
         horizontalAxis = "Horizontal_P" + PlayerNumber;
         verticalAxis = "Vertical_P" + PlayerNumber;

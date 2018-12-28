@@ -20,14 +20,13 @@ GameObject:
   m_Component:
   - component: {fileID: 4307446022244390}
   - component: {fileID: 114714437813939140}
-  - component: {fileID: 114604738805842204}
   m_Layer: 0
   m_Name: New Level Track
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4307446022244390
 Transform:
   m_ObjectHideFlags: 1
@@ -41,19 +40,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114604738805842204
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1562250147551750}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a89c1aabb9c06ed42adccee859b0e852, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SoundManagerPrefab: {fileID: 1768470668144252, guid: 1133fa6c73d06c54aa38b8f7080b8f49,
-    type: 2}
 --- !u!114 &114714437813939140
 MonoBehaviour:
   m_ObjectHideFlags: 1
