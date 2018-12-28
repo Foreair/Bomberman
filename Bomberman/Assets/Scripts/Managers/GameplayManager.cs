@@ -102,6 +102,8 @@ public class GameplayManager : MonoBehaviour {
         if (gameWinner != null)
         {
             // If there is a game winner, restart the level.
+            level++;
+            roundNumber = 0;
             LoadMultiplayer();
         }
         else

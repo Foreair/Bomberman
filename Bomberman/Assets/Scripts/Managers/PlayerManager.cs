@@ -27,7 +27,7 @@ public class PlayerManager {
         playerInput.InitializeInput();
         playerData.InitializeData();
 
-        coloredPlayerText = "<color=#" + ColorUtility.ToHtmlStringRGB(playerColor) + ">PLAYER " + playerColor + "</color>";
+        coloredPlayerText = "<color=#" + ColorUtility.ToHtmlStringRGB(playerColor) + ">PLAYER " + playerNumber + "</color>";
         SpriteRenderer[] renderers = instance.GetComponentsInChildren<SpriteRenderer>();
 
         foreach (var item in renderers)
