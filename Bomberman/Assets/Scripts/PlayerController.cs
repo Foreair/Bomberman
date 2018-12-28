@@ -67,7 +67,7 @@ public class PlayerController : MonoBehaviour
         //movement.x = Input.GetAxis("Horizontal");
         //movement.y = Input.GetAxis("Vertical");
 
-        if(playerData.direction.magnitude == 0)
+        if (playerData.direction.magnitude == 0)
         {
             playerData.moving = false;
             currentMoved = 0.0f;
@@ -77,10 +77,8 @@ public class PlayerController : MonoBehaviour
         {
             currentMoved = Time.deltaTime * playerData.speed;
         }
-        RaycastHit2D hit = Physics2D.BoxCast(transform.position, boxSize, 0.0f, playerData.direction, offset, Mask);
-        RaycastHit2D hitBomb = Physics2D.BoxCast(transform.position, boxSize, 0.0f, playerData.direction, offset, Mask2);
 
-        if (!hit.collider && (!hitBomb.collider || hitBomb.collider.isTrigger))
+        if (!CheckCollisions())
         {
             playerData.moving = true;
             Vector2 localEndPos = new Vector2(playerData.direction.x * currentMoved, playerData.direction.y * currentMoved);
@@ -123,6 +121,49 @@ public class PlayerController : MonoBehaviour
 
         animator.SetFloat("x", playerData.direction.x);
         animator.SetFloat("y", playerData.direction.y);
+    }
+
+    //True if we collide. False if we can move.
+    private bool CheckCollisions()
+    {
+        RaycastHit2D hit = Physics2D.BoxCast(transform.position, boxSize, 0.0f, playerData.direction, offset, Mask);
+        RaycastHit2D hitBomb = Physics2D.BoxCast(transform.position, boxSize, 0.0f, playerData.direction, offset, Mask2);
+
+        //If we collide with a bomb, we do not move
+        if(hitBomb.collider && !hitBomb.collider.isTrigger )
+        {
+            return true;
+        }
+
+        //If we dont collide we move
+        if (!hit.collider)
+        {
+            return false;
+        }
+
+        //If we are moving in both directions and we  have collided, we check if we can move in either of those directions.
+        //If we can, we set the direction accordingly, and return false
+        if (playerData.direction.x != 0 && playerData.direction.y != 0)
+        {
+            Vector2 xOnly = new Vector2(playerData.direction.x, 0);
+            Vector2 yOnly = new Vector2(0, playerData.direction.y);
+
+            RaycastHit2D hitX = Physics2D.BoxCast(transform.position, boxSize, 0.0f, xOnly, offset, Mask);
+            RaycastHit2D hitY = Physics2D.BoxCast(transform.position, boxSize, 0.0f, yOnly, offset, Mask);
+
+            if (!hitX.collider)
+            {
+                playerData.direction = xOnly;
+                return false;
+            }
+
+            if (!hitY.collider)
+            {
+                playerData.direction = yOnly;
+                return false;
+            }
+        }
+        return true;
     }
 
     //[UnityEditor.MenuItem("Tools/Increase Speed")]

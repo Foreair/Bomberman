@@ -57,7 +57,7 @@ MonoBehaviour:
   playerPrefab: {fileID: 1272174633844726, guid: b2728c42e3494e14f944b44ad9e156c3,
     type: 2}
   players:
-  - playerColor: {r: 1, g: 1, b: 1, a: 1}
+  - playerColor: {r: 0, g: 1, b: 1, a: 1}
     spawnPoint: {fileID: 4970296250793656, guid: a0c78bd16c61fc74fa21c7c557fed53e,
       type: 2}
     playerNumber: 0
@@ -71,3 +71,4 @@ MonoBehaviour:
     instance: {fileID: 0}
     wins: 0
     coloredPlayerText: 
+  mapPrefab: {fileID: 1485780488918926, guid: 0f05bd1f30ab65b4b808445f25e5d79f, type: 2}
