@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4491010128596710}
   - component: {fileID: 114801276013675194}
+  - component: {fileID: 114237556744669354}
   m_Layer: 0
   m_Name: GameplayManager
   m_TagString: Untagged
@@ -40,6 +41,40 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114237556744669354
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1878839426540636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fe0c4123a242d64591642e653db8d29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  columns: 16
+  rows: 8
+  wallCount:
+    minimum: 2
+    maximum: 5
+  destroyableWallCount:
+    minimum: 2
+    maximum: 5
+  pickUpsCount:
+    minimum: 2
+    maximum: 5
+  floorTiles:
+  - {fileID: 11400000, guid: 43c4f123b1b63214fac2164652a4175d, type: 2}
+  wallTiles:
+  - {fileID: 11400000, guid: 6e64780ec7204674d89c0343eaff84c4, type: 2}
+  destroyableWallTiles:
+  - {fileID: 11400000, guid: 920b215c9d652c24fb1b6e8fc36f6869, type: 2}
+  backgroundTiles:
+  - {fileID: 11400000, guid: 6e64780ec7204674d89c0343eaff84c4, type: 2}
+  pickUps:
+  - {fileID: 1844115197038136, guid: 062aa3d78620a3c439313f40ae0537da, type: 2}
+  - {fileID: 1294759342254998, guid: a4ad1b5b0ff4e0540a067fbee560cee9, type: 2}
+  - {fileID: 1455583618800802, guid: ad7e34db90e5ea24a89a2a41d1b17291, type: 2}
 --- !u!114 &114801276013675194
 MonoBehaviour:
   m_ObjectHideFlags: 1

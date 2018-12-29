@@ -9,6 +9,7 @@ using TMPro;
 public class GameplayManager : MonoBehaviour {
 
     public static GameplayManager instance = null;
+    private LevelManager levelManager;
 
     public int roundsToWin = 1;                 // The number of rounds a single player has to win to win the game.
     public float startDelay = 3f;               // The delay between the start of RoundStarting and RoundPlaying phases.
@@ -17,7 +18,7 @@ public class GameplayManager : MonoBehaviour {
     public PlayerManager[] players;             // A collection of managers for enabling and disabling different aspects of the players.
     public GameObject mapPrefab;                //Reference to the map. Each Map is represented by its grid containing different tilemaps.
 
-    private int level;                          // Which level the game is currently on.
+    private int level = 1;                          // Which level the game is currently on.
     private int roundNumber;                    // Which round the game is currently on.
     private Text messageText;                   // Reference to the overlay Text to display winning text, etc.
     private WaitForSeconds startWait;           // Used to have a delay whilst the round starts.
@@ -33,6 +34,7 @@ public class GameplayManager : MonoBehaviour {
         else if (instance != this)
             Destroy(gameObject);
 
+        levelManager = GetComponent <LevelManager>();
         DontDestroyOnLoad(gameObject);
 
         if (SceneManager.GetActiveScene().name == "2P Level1")
@@ -50,15 +52,22 @@ public class GameplayManager : MonoBehaviour {
 
     IEnumerator LoadMP()
     {
-        SceneManager.LoadScene("2P Level1");
+        //SceneManager.LoadScene("2P Level1");
         yield return null;
-        StartMultiplayer();
+        GenerateLevel(level);
+        yield return null;
+        //StartMultiplayer();
     }
 
     public void QuitGame()
     {
         Debug.Log("Quit game");
         Application.Quit();
+    }
+
+    private void GenerateLevel(int currentLevel)
+    {
+        levelManager.SetupScene(currentLevel);
     }
 
     private void StartMultiplayer()
