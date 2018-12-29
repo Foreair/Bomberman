@@ -74,33 +74,73 @@ public class LevelManager : MonoBehaviour {
         TilemapRenderer floorTilemapRenderer = floor.AddComponent<TilemapRenderer>();
         floorTilemapRenderer.sortingLayerName = "Ground";
 
-        for (int x = -1; x < columns + 1; x++)
-        {
-            for (int y = -1; y < rows + 1; y++)
-            {
-                Tile toInstantiate;
-                //If we are in the background
-                if (x == -1 || x == columns || y == -1 || y == rows)
-                {
+        //Initialising Tiles
+        InitialiseTiles(true, backgroundTilemap, floorTilemap);
 
-                    toInstantiate = backgroundTiles[Random.Range(0, backgroundTiles.Length)];
-                    backgroundTilemap.SetTile(new Vector3Int(x, y, 0), toInstantiate);
-                    //backgroundTilemap.SetTile(backgroundTilemap.WorldToCell(new Vector3Int(x, y, 0)), toInstantiate);
-                }
-                else
-                {
-                    toInstantiate = floorTiles[Random.Range(0, floorTiles.Length)];
-                    floorTilemap.SetTile(new Vector3Int(x, y, 0), toInstantiate);
-                    //floorTilemap.SetTile(floorTilemap.WorldToCell(new Vector3Int(x, y, 0)), toInstantiate);
-                }
-            }
-        }
-
+        //Adding colliders
         Rigidbody2D rb2D = background.AddComponent<Rigidbody2D>();
         rb2D.bodyType = RigidbodyType2D.Static;
         TilemapCollider2D tilemapCollider2D = background.AddComponent<TilemapCollider2D>();
         tilemapCollider2D.usedByComposite = true;
         background.AddComponent<CompositeCollider2D>();
+    }
+
+    private void InitialiseTiles(bool centered, Tilemap bgTilemap, Tilemap floorTilemap)
+    {
+        ////Attempt to do it more efficient
+        //BoundsInt box = new BoundsInt(Vector3Int.zero, new Vector3Int(columns, rows, 0));
+        //TileBase[] ground = new Tile[columns * rows];
+        //for (int i = 0; i < ground.Length; i++)
+        //{
+        //    ground[i] = floorTiles[0];
+        //}
+
+        //backgroundTilemap.SetTilesBlock(box, ground);
+
+        if (centered)
+        {
+            for (int x = (-columns / 2) - 1; x < (columns / 2) + 1; x++)
+            {
+                for (int y = (-rows / 2) - 1; y < (rows / 2) + 1; y++)
+                {
+                    Tile toInstantiate;
+                    //If we are in the background
+                    if (x == (-columns / 2) - 1 || x == (columns / 2) || y == (-rows / 2) - 1 || y == (rows / 2))
+                    {
+
+                        toInstantiate = backgroundTiles[Random.Range(0, backgroundTiles.Length)];
+                        bgTilemap.SetTile(bgTilemap.WorldToCell(new Vector3Int(x, y, 0)), toInstantiate);
+                    }
+                    else
+                    {
+                        toInstantiate = floorTiles[Random.Range(0, floorTiles.Length)];
+                        floorTilemap.SetTile(floorTilemap.WorldToCell(new Vector3Int(x, y, 0)), toInstantiate);
+                    }
+                }
+            }
+        }
+        else
+        {
+            for (int x = - 1; x < columns + 1; x++)
+            {
+                for (int y = - 1; y < rows + 1; y++)
+                {
+                    Tile toInstantiate;
+                    //If we are in the background
+                    if (x == - 1 || x == columns || y == - 1 || y == rows)
+                    {
+
+                        toInstantiate = backgroundTiles[Random.Range(0, backgroundTiles.Length)];
+                        bgTilemap.SetTile(bgTilemap.WorldToCell(new Vector3Int(x, y, 0)), toInstantiate);
+                    }
+                    else
+                    {
+                        toInstantiate = floorTiles[Random.Range(0, floorTiles.Length)];
+                        floorTilemap.SetTile(floorTilemap.WorldToCell(new Vector3Int(x, y, 0)), toInstantiate);
+                    }
+                }
+            }
+        }
     }
 
     private Vector3 RandomPosition()
@@ -111,15 +151,17 @@ public class LevelManager : MonoBehaviour {
         return randomPosition;
     }
 
-    private void LayoutObjectAtRandom(GameObject[] tileArray, int minimum, int maximum)
+    private void LayoutObjectAtRandom(Tile[] tileArray, int minimum, int maximum)
     {
-        int objectCount = Random.Range(minimum, maximum + 1);
-
-        for(int i = 0; i < objectCount; i++)
+        for (int j = 0; j < rows; j++)
         {
-            Vector3 randomPosition = RandomPosition();
-            GameObject tileChoice = tileArray[Random.Range(0, tileArray.Length)];
-            Instantiate(tileChoice, randomPosition, Quaternion.identity);
+            int objectCount = Random.Range(minimum, maximum + 1);
+            for (int i = 0; i < objectCount; i++)
+            {
+                Vector3 randomPosition = RandomPosition();
+                GameObject tileChoice = tileArray[Random.Range(0, tileArray.Length)];
+                Instantiate(tileChoice, randomPosition, Quaternion.identity);
+            }
         }
     }
 
