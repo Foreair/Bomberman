@@ -101,9 +101,8 @@ public class GameplayManager : MonoBehaviour {
         // This code is not run until 'RoundEnding' has finished.  At which point, check if a game winner has been found.
         if (gameWinner != null)
         {
-            // If there is a game winner, restart the level.
-            level++;
-            roundNumber = 0;
+            // If there is a game winner, update variables and move to the next level.
+            UpdateVariables();
             LoadMultiplayer();
         }
         else
@@ -132,13 +131,13 @@ public class GameplayManager : MonoBehaviour {
 
     private IEnumerator RoundPlaying()
     {
-        // As soon as the round begins playing let the players control the tanks.
+        // As soon as the round begins playing let the players control the bombermans.
         EnableControl();
 
         // Clear the text from the screen.
         messageText.text = string.Empty;
 
-        // While there is not one tank left...
+        // While there is not one player left...
         while (!OnePlayerLeft())
         {
             // ... return on the next frame.
@@ -149,7 +148,7 @@ public class GameplayManager : MonoBehaviour {
 
     private IEnumerator RoundEnding()
     {
-        // Stop tanks from moving.
+        // Stop players from moving.
         DisableControl();
 
         // Clear the winner from the previous round.
@@ -173,13 +172,13 @@ public class GameplayManager : MonoBehaviour {
         yield return endWait;
     }
 
-    // This is used to check if there is one or fewer tanks remaining and thus the round should end.
+    // This is used to check if there is one or fewer players remaining and thus the round should end.
     private bool OnePlayerLeft()
     {
         // Start the count of players left at zero.
         int numPlayersLeft = 0;
 
-        // Go through all the tanks...
+        // Go through all the players...
         for (int i = 0; i < players.Length; i++)
         {
             // ... and if they are active, increment the counter.
@@ -193,7 +192,7 @@ public class GameplayManager : MonoBehaviour {
 
 
     // This function is to find out if there is a winner of the round.
-    // This function is called with the assumption that 1 or fewer tanks are currently active.
+    // This function is called with the assumption that 1 or fewer players are currently active.
     private PlayerManager GetRoundWinner()
     {
         // Go through all the players...
@@ -220,7 +219,7 @@ public class GameplayManager : MonoBehaviour {
                 return players[i];
         }
 
-        // If no tanks have enough rounds to win, return null.
+        // If no players have enough rounds to win, return null.
         return null;
     }
 
@@ -281,6 +280,16 @@ public class GameplayManager : MonoBehaviour {
         foreach (var player in players)
         {
             player.EnableControl();
+        }
+    }
+
+    private void UpdateVariables()
+    {
+        level++;
+        roundNumber = 0;
+        foreach (var player in players)
+        {
+            player.wins = 0;
         }
     }
 }
