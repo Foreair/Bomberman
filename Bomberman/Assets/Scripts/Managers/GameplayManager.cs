@@ -56,7 +56,7 @@ public class GameplayManager : MonoBehaviour {
         yield return null;
         GenerateLevel(level);
         yield return null;
-        //StartMultiplayer();
+        StartMultiplayer();
     }
 
     public void QuitGame()
@@ -80,7 +80,7 @@ public class GameplayManager : MonoBehaviour {
         SpawnMultiplayerMode();
 
         // Once the players have been created, start the game.
-        StartCoroutine(GameLoopMP());
+        //StartCoroutine(GameLoopMP());
     }
 
     private void SpawnMultiplayerMode()

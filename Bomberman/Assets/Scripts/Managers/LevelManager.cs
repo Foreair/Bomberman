@@ -358,7 +358,7 @@ public class LevelManager : MonoBehaviour
     {
         //Initialise range
         wallCount = new Count(0, rows / 2);
-        destroyableWallCount = new Count(1 , rows / 2);
+        destroyableWallCount = new Count(1, rows / 2);
         bool oddRowNumber, oddColNumber;
         oddRowNumber = rows % 2 == 1 ? true : false;
         oddColNumber = columns % 2 == 1 ? true : false;
@@ -398,6 +398,39 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    private void InitialisePlayersSpawnPosition()
+    {
+        GameObject spawnPos = new GameObject("Spawn Positions");
+        spawnPos.transform.parent = map.transform;
+
+        GameObject players = new GameObject("Players Spawn Positions");
+        players.transform.parent = spawnPos.transform;
+
+        GameObject enemies = new GameObject("Enemies Spawn Positions");
+        enemies.transform.parent = spawnPos.transform;
+        if (GameplayManager.instance.players.Length < 3)
+        {
+
+            GameObject player1 = new GameObject("Player 1");
+            player1.transform.parent = players.transform;
+            player1.transform.position = new Vector3(startPosCol + 0.5f, startPosRow + 0.5f, 0f);
+
+            GameObject player2 = new GameObject("Player 2");
+            player2.transform.parent = players.transform;
+            player2.transform.position = new Vector3(endPosCol - 0.5f, endPosRow - 0.5f, 0f);
+
+            GameplayManager.instance.players[0].spawnPoint = player1.transform;
+            GameplayManager.instance.players[1].spawnPoint = player2.transform;
+
+        }
+        else
+        {
+            Debug.Log("Only 2 players are supported");
+        }
+
+
+    }
+
     private void Initialise()
     {
         InitialiseGameObjects();
@@ -408,6 +441,7 @@ public class LevelManager : MonoBehaviour
     {
         Initialise();
         GenerateBasicMap();
+        InitialisePlayersSpawnPosition();
         LayoutObjectUniformly(wallsTilemap, wallTiles);
         LayoutObjectAtRandom(destroyableWallsTilemap, destroyableWallTiles, destroyableWallCount.minimum, destroyableWallCount.maximum);
         GeneratePowerups();
