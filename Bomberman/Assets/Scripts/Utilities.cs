@@ -8,7 +8,7 @@ public static class Utilities{
     {
         Grid grid = Object.FindObjectOfType<Grid>();
         Vector3 snappedPos = Vector3.zero;
-        if (pos.x > 0)
+        if (pos.x >= 0)
         {
             snappedPos.x = (int)pos.x + (grid.cellSize.x / 2);
         }
@@ -17,7 +17,7 @@ public static class Utilities{
             snappedPos.x = (int)pos.x - (grid.cellSize.x / 2);
         }
 
-        if (pos.y > 0)
+        if (pos.y >= 0)
         {
             snappedPos.y = (int)pos.y + (grid.cellSize.y / 2);
         }

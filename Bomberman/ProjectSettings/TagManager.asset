@@ -59,10 +59,10 @@ TagManager:
   - name: Power Ups
     uniqueID: 868301317
     locked: 0
-  - name: Obstacles
+  - name: Walls
     uniqueID: 1456764501
     locked: 0
-  - name: Obstacles Destroyable
+  - name: Destroyable Walls
     uniqueID: 2013991647
     locked: 0
   - name: Bombs

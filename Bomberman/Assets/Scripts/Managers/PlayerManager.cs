@@ -6,8 +6,8 @@ using UnityEngine;
 public class PlayerManager {
 
     public Color playerColor;                               //Color of the player
-    public Transform spawnPoint;                            //Spawn location of this player
 
+    [HideInInspector] public Transform spawnPoint;                            //Spawn location of this player
     [HideInInspector] public int playerNumber;              //Player id number
     [HideInInspector] public GameObject instance;           //Instance of the Player associated with this manager.
     [HideInInspector] public int wins;                      //Current number of wins for this player.

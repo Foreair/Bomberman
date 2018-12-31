@@ -16,7 +16,7 @@ public class GameplayManager : MonoBehaviour {
     public float endDelay = 3f;                 // The delay between the end of RoundPlaying and RoundEnding phases.
     public GameObject playerPrefab;             // Reference to the prefab the players will control.
     public PlayerManager[] players;             // A collection of managers for enabling and disabling different aspects of the players.
-    public GameObject mapPrefab;                //Reference to the map. Each Map is represented by its grid containing different tilemaps.
+    public GameObject mapPrefab;                // Reference to the map. Each Map is represented by its grid containing different tilemaps.
 
     private int level = 1;                          // Which level the game is currently on.
     private int roundNumber;                    // Which round the game is currently on.
