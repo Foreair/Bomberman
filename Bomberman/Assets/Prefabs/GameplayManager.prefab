@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fe0c4123a242d64591642e653db8d29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCentered: 1
+  isCentered: 0
   columns: 13
   rows: 7
   pickUpsCount:

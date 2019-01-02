@@ -21,7 +21,7 @@ public class LevelManager : MonoBehaviour
         }
     }
     //Main holders of our map
-    private GameObject map;                                     //Reference for our map Gameobject
+    [HideInInspector] public GameObject map;                    //Reference for our map Gameobject
     private GameObject background;                              //Reference for our background Gameobject
     private GameObject floor;                                   //Reference for our floor Gameobject
     private GameObject walls;                                   //Reference for our walls Gameobject
@@ -127,6 +127,7 @@ public class LevelManager : MonoBehaviour
         return result;
     }
 
+    //Returns all free tiles from a given column
     private List<Vector3> CheckPositions(int col, Tilemap[] tileMaps)
     {
         List<Vector3> positions = new List<Vector3>();
@@ -219,8 +220,8 @@ public class LevelManager : MonoBehaviour
                 Vector3 posInCell = pos + new Vector3(0.5f, 0.5f, 0f);
                 if (destroyableWallsTilemap.GetTile(mapTilemap.WorldToCell(posInCell)))
                 {
-                    //50% of spawning a powerup
-                    int probability = Random.Range(0, 3);
+                    //25% of spawning a powerup
+                    int probability = Random.Range(0, 4);
                     if (probability == 0)
                     {
                         GameObject instance = Instantiate<GameObject>(pickUps[Random.Range(0, pickUps.Length)], posInCell, Quaternion.identity);
@@ -358,7 +359,7 @@ public class LevelManager : MonoBehaviour
     {
         //Initialise range
         wallCount = new Count(0, rows / 2);
-        destroyableWallCount = new Count(1, rows / 2);
+        destroyableWallCount = new Count(2, rows / 2);
         bool oddRowNumber, oddColNumber;
         oddRowNumber = rows % 2 == 1 ? true : false;
         oddColNumber = columns % 2 == 1 ? true : false;
@@ -400,16 +401,17 @@ public class LevelManager : MonoBehaviour
 
     private void InitialisePlayersSpawnPosition()
     {
-        GameObject spawnPos = new GameObject("Spawn Positions");
-        spawnPos.transform.parent = map.transform;
-
-        GameObject players = new GameObject("Players Spawn Positions");
-        players.transform.parent = spawnPos.transform;
-
-        GameObject enemies = new GameObject("Enemies Spawn Positions");
-        enemies.transform.parent = spawnPos.transform;
-        if (GameplayManager.instance.players.Length < 3)
+        if (GameplayManager.instance.players.Length == 2)
         {
+            GameObject spawnPos = new GameObject("Spawn Positions");
+            spawnPos.transform.parent = map.transform;
+
+            GameObject players = new GameObject("Players Spawn Positions");
+            players.transform.parent = spawnPos.transform;
+
+            GameObject enemies = new GameObject("Enemies Spawn Positions");
+            enemies.transform.parent = spawnPos.transform;
+
 
             GameObject player1 = new GameObject("Player 1");
             player1.transform.parent = players.transform;
@@ -431,6 +433,34 @@ public class LevelManager : MonoBehaviour
 
     }
 
+    private void ClearPlayersSpawnPosition()
+    {
+        //Clearing L around player1
+        Vector3Int spawnPos1 = mapTilemap.WorldToCell(GameplayManager.instance.players[0].spawnPoint.position);
+        Vector3Int h1 = new Vector3Int(spawnPos1.x + 1, spawnPos1.y, 0);
+        Vector3Int v1 = new Vector3Int(spawnPos1.x, spawnPos1.y + 1, 0);
+
+        if (destroyableWallsTilemap.GetTile(spawnPos1))
+            destroyableWallsTilemap.SetTile(spawnPos1, null);
+        if (destroyableWallsTilemap.GetTile(h1))
+            destroyableWallsTilemap.SetTile(h1, null);
+        if (destroyableWallsTilemap.GetTile(v1))
+            destroyableWallsTilemap.SetTile(v1, null);
+
+        //Clearing L around player2
+        Vector3Int spawnPos2 = mapTilemap.WorldToCell(GameplayManager.instance.players[1].spawnPoint.position);
+        Vector3Int h2 = new Vector3Int(spawnPos2.x - 1, spawnPos2.y, 0);
+        Vector3Int v2 = new Vector3Int(spawnPos2.x, spawnPos2.y - 1, 0);
+
+        if (destroyableWallsTilemap.GetTile(spawnPos2))
+            destroyableWallsTilemap.SetTile(spawnPos2, null);
+        if (destroyableWallsTilemap.GetTile(h2))
+            destroyableWallsTilemap.SetTile(h2, null);
+        if (destroyableWallsTilemap.GetTile(v2))
+            destroyableWallsTilemap.SetTile(v2, null);
+
+    }
+
     private void Initialise()
     {
         InitialiseGameObjects();
@@ -444,8 +474,11 @@ public class LevelManager : MonoBehaviour
         InitialisePlayersSpawnPosition();
         LayoutObjectUniformly(wallsTilemap, wallTiles);
         LayoutObjectAtRandom(destroyableWallsTilemap, destroyableWallTiles, destroyableWallCount.minimum, destroyableWallCount.maximum);
+        ClearPlayersSpawnPosition();
         GeneratePowerups();
         InitialisePhysics();
+
+        GameplayManager.instance.map = map;
 
     }
 

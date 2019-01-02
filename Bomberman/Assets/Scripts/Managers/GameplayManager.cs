@@ -6,26 +6,28 @@ using UnityEngine.SceneManagement;
 using TMPro;
 
 
-public class GameplayManager : MonoBehaviour {
+public class GameplayManager : MonoBehaviour
+{
 
     public static GameplayManager instance = null;
     private LevelManager levelManager;
 
-    public int roundsToWin = 1;                 // The number of rounds a single player has to win to win the game.
-    public float startDelay = 3f;               // The delay between the start of RoundStarting and RoundPlaying phases.
-    public float endDelay = 3f;                 // The delay between the end of RoundPlaying and RoundEnding phases.
-    public GameObject playerPrefab;             // Reference to the prefab the players will control.
-    public PlayerManager[] players;             // A collection of managers for enabling and disabling different aspects of the players.
-    public GameObject mapPrefab;                // Reference to the map. Each Map is represented by its grid containing different tilemaps.
+    public int roundsToWin = 1;                         // The number of rounds a single player has to win to win the game.
+    public float startDelay = 3f;                       // The delay between the start of RoundStarting and RoundPlaying phases.
+    public float endDelay = 3f;                         // The delay between the end of RoundPlaying and RoundEnding phases.
+    public GameObject playerPrefab;                     // Reference to the prefab the players will control.
+    public PlayerManager[] players;                     // A collection of managers for enabling and disabling different aspects of the players.
 
-    private int level = 1;                          // Which level the game is currently on.
-    private int roundNumber;                    // Which round the game is currently on.
-    private Text messageText;                   // Reference to the overlay Text to display winning text, etc.
-    private WaitForSeconds startWait;           // Used to have a delay whilst the round starts.
-    private WaitForSeconds endWait;             // Used to have a delay whilst the round or game ends.
-    private PlayerManager roundWinner;          // Reference to the winner of the current round.  Used to make an announcement of who won.
-    private PlayerManager gameWinner;           // Reference to the winner of the game.  Used to make an announcement of who won.
-    private GameObject currentMap;
+    [HideInInspector] public GameObject map;            // Reference to the map. Each Map is represented by its grid containing different tilemaps.
+
+    private int level = 1;                              // Which level the game is currently on.
+    private int roundNumber;                            // Which round the game is currently on.
+    private Text messageText;                           // Reference to the overlay Text to display winning text, etc.
+    private WaitForSeconds startWait;                   // Used to have a delay whilst the round starts.
+    private WaitForSeconds endWait;                     // Used to have a delay whilst the round or game ends.
+    private PlayerManager roundWinner;                  // Reference to the winner of the current round.  Used to make an announcement of who won.
+    private PlayerManager gameWinner;                   // Reference to the winner of the game.  Used to make an announcement of who won.
+    private bool start;
 
     private void Start()
     {
@@ -34,8 +36,10 @@ public class GameplayManager : MonoBehaviour {
         else if (instance != this)
             Destroy(gameObject);
 
-        levelManager = GetComponent <LevelManager>();
+        levelManager = GetComponent<LevelManager>();
         DontDestroyOnLoad(gameObject);
+
+        start = true;
 
         if (SceneManager.GetActiveScene().name == "2P Level1")
             LoadMultiplayer();
@@ -52,9 +56,7 @@ public class GameplayManager : MonoBehaviour {
 
     IEnumerator LoadMP()
     {
-        //SceneManager.LoadScene("2P Level1");
-        yield return null;
-        GenerateLevel(level);
+        SceneManager.LoadScene("2P Level1");
         yield return null;
         StartMultiplayer();
     }
@@ -65,7 +67,7 @@ public class GameplayManager : MonoBehaviour {
         Application.Quit();
     }
 
-    private void GenerateLevel(int currentLevel)
+    private void GenerateMap(int currentLevel)
     {
         levelManager.SetupScene(currentLevel);
     }
@@ -77,10 +79,11 @@ public class GameplayManager : MonoBehaviour {
         endWait = new WaitForSeconds(endDelay);
         messageText = GameObject.Find("Text").GetComponent<Text>();
 
+        GenerateMap(level);
         SpawnMultiplayerMode();
 
         // Once the players have been created, start the game.
-        //StartCoroutine(GameLoopMP());
+        StartCoroutine(GameLoopMP());
     }
 
     private void SpawnMultiplayerMode()
@@ -271,9 +274,16 @@ public class GameplayManager : MonoBehaviour {
 
     private void ResetMap()
     {
-        if(currentMap)
-            Destroy(currentMap);
-        currentMap = Instantiate(mapPrefab);
+        if (!start)
+        {
+            Destroy(map);
+            GenerateMap(level);
+        }
+        else
+        {
+            start = false;
+        }
+
     }
 
     private void DisableControl()
