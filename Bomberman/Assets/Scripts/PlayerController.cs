@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
         Mask2 = LayerMask.GetMask("Bombs");
         boxSize = new Vector2(mycollider.bounds.extents.x * 2, mycollider.bounds.extents.y * 2);
         currentMoved = 0.0f;
-        offset = 0.2f;
+        offset = 0.15f;
     }
 
 

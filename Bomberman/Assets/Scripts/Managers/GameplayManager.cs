@@ -16,8 +16,10 @@ public class GameplayManager : MonoBehaviour
     public float startDelay = 3f;                       // The delay between the start of RoundStarting and RoundPlaying phases.
     public float endDelay = 3f;                         // The delay between the end of RoundPlaying and RoundEnding phases.
     public GameObject playerPrefab;                     // Reference to the prefab the players will control.
-    public PlayerManager[] players;                     // A collection of managers for enabling and disabling different aspects of the players.
+    public Color player1Color = Color.cyan;             // Color of Player 1
+    public Color player2Color = Color.yellow;           // Color of Player 2
 
+    [HideInInspector] public PlayerManager[] players;   // A collection of managers for enabling and disabling different aspects of the players.
     [HideInInspector] public GameObject map;            // Reference to the map. Each Map is represented by its grid containing different tilemaps.
 
     private int level = 1;                              // Which level the game is currently on.
@@ -43,15 +45,49 @@ public class GameplayManager : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name == "2P Level1")
             LoadMultiplayer();
+        if (SceneManager.GetActiveScene().name == "1P Level1")
+            LoadSinglePlayer();
     }
+
+    private void InitializePlayerManagers(int number)
+    {
+        players = new PlayerManager[number];
+        for (int i = 0; i < players.Length; i++)
+        {
+            players[i] = new PlayerManager();
+        }
+    }
+
     public void LoadSinglePlayer()
     {
-        SceneManager.LoadScene("1P Level1");
+        //Initializing PlayerManagers
+        InitializePlayerManagers(1);
+
+        //Hardcoded colors
+        players[0].playerColor = player1Color;
+
+        //Starting Coroutine
+        StartCoroutine(LoadSP());
     }
 
     public void LoadMultiplayer()
     {
+        //Initializing PlayerManagers
+        InitializePlayerManagers(2);
+
+        //Hardcoded colors
+        players[0].playerColor = player1Color;
+        players[1].playerColor = player2Color;
+
+        //Starting Coroutine
         StartCoroutine(LoadMP());
+    }
+
+    IEnumerator LoadSP()
+    {
+        SceneManager.LoadScene("1P Level1");
+        yield return null;
+        StartSingleplayer();
     }
 
     IEnumerator LoadMP()
@@ -72,6 +108,20 @@ public class GameplayManager : MonoBehaviour
         levelManager.SetupScene(currentLevel);
     }
 
+    private void StartSingleplayer()
+    {
+        // Create the delays so they only have to be made once.
+        startWait = new WaitForSeconds(startDelay);
+        endWait = new WaitForSeconds(endDelay);
+        messageText = GameObject.Find("Text").GetComponent<Text>();
+
+        GenerateMap(level);
+        SpawnPlayers();
+
+        // Once the players have been created, start the game.
+        StartCoroutine(GameLoopMP());
+    }
+
     private void StartMultiplayer()
     {
         // Create the delays so they only have to be made once.
@@ -80,15 +130,14 @@ public class GameplayManager : MonoBehaviour
         messageText = GameObject.Find("Text").GetComponent<Text>();
 
         GenerateMap(level);
-        SpawnMultiplayerMode();
+        SpawnPlayers();
 
         // Once the players have been created, start the game.
         StartCoroutine(GameLoopMP());
     }
 
-    private void SpawnMultiplayerMode()
+    private void SpawnPlayers()
     {
-        //For all players...
         for (int i = 0; i < players.Length; i++)
         {
             // ... create them, set their player number and references needed for control.

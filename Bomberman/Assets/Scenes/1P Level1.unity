@@ -1562,6 +1562,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenuUI: {fileID: 1045176547}
+  inGameUI: {fileID: 0}
 --- !u!1 &570177640
 GameObject:
   m_ObjectHideFlags: 0
@@ -3896,25 +3897,7 @@ CompositeCollider2D:
   m_GeometryType: 0
   m_GenerationType: 0
   m_EdgeRadius: 0
-  m_ColliderPaths:
-  - m_Collider: {fileID: 1095598881}
-    m_ColliderPaths:
-    - - X: 80000000
-        Y: 50000000
-      - X: -90000000
-        Y: 50000000
-      - X: -90000000
-        Y: -40000000
-      - X: 80000000
-        Y: -40000000
-    - - X: -80000000
-        Y: -30000000
-      - X: -80000000
-        Y: 40000000
-      - X: 70000000
-        Y: 40000000
-      - X: 70000000
-        Y: -30000000
+  m_ColliderPaths: []
   m_CompositePaths:
     m_Paths:
     - - {x: 8, y: 5}
@@ -4134,7 +4117,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!50 &1415117941
 Rigidbody2D:
   serializedVersion: 4
@@ -4220,7 +4203,7 @@ MonoBehaviour:
     horizontalMovement: 0
   grid: {fileID: 0}
   rb: {fileID: 0}
-  aiActive: 1
+  aiActive: 0
   myCollider: {fileID: 0}
   boxSize: {x: 0, y: 0}
 --- !u!1 &1535247716
@@ -4461,7 +4444,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!156049354 &1809240050
 Grid:
   m_ObjectHideFlags: 0

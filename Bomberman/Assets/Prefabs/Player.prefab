@@ -162,7 +162,7 @@ MonoBehaviour:
     verticalAxis: Vertical_P1
     bombButton: Bomb_P1
   Bomb: {fileID: 1058165843028846, guid: 08a3979b96976f1439f151ffc1ca3f43, type: 2}
-  offset: 0.25
+  offset: 0.15
 --- !u!212 &212536321988377060
 SpriteRenderer:
   m_ObjectHideFlags: 1
