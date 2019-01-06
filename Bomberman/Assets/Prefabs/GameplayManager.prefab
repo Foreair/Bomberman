@@ -87,5 +87,7 @@ MonoBehaviour:
   endDelay: 3
   playerPrefab: {fileID: 1272174633844726, guid: b2728c42e3494e14f944b44ad9e156c3,
     type: 2}
+  player1Color: {r: 0, g: 1, b: 1, a: 1}
+  player2Color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   players: []
   map: {fileID: 0}

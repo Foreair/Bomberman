@@ -45,6 +45,7 @@ public class GameplayManager : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name == "2P Level1")
             LoadMultiplayer();
+
         if (SceneManager.GetActiveScene().name == "1P Level1")
             LoadSinglePlayer();
     }
@@ -58,6 +59,8 @@ public class GameplayManager : MonoBehaviour
         }
     }
 
+    //Function Called to start the SinglePlayerMode
+    //Initialises Players Managers and calls the coroutine LoadSP
     public void LoadSinglePlayer()
     {
         //Initializing PlayerManagers
@@ -70,6 +73,8 @@ public class GameplayManager : MonoBehaviour
         StartCoroutine(LoadSP());
     }
 
+    //Function Called to start the MultiPlayerMode
+    //Initialises Players Managers and calls the coroutine LoadMP
     public void LoadMultiplayer()
     {
         //Initializing PlayerManagers
@@ -83,6 +88,7 @@ public class GameplayManager : MonoBehaviour
         StartCoroutine(LoadMP());
     }
 
+    //Loads the scene and calls StartSinglePlayer
     IEnumerator LoadSP()
     {
         SceneManager.LoadScene("1P Level1");
@@ -90,6 +96,7 @@ public class GameplayManager : MonoBehaviour
         StartSingleplayer();
     }
 
+    //Loads the scene and calls StartMultiPlayer
     IEnumerator LoadMP()
     {
         SceneManager.LoadScene("2P Level1");
@@ -108,6 +115,9 @@ public class GameplayManager : MonoBehaviour
         levelManager.SetupScene(currentLevel);
     }
 
+    //Creates the delays for the start and end of the rounds, gets the UI in-game component
+    //Creates the map and spawns the players/enemies in their positions
+    //and finally starts the game loop
     private void StartSingleplayer()
     {
         // Create the delays so they only have to be made once.
@@ -119,9 +129,12 @@ public class GameplayManager : MonoBehaviour
         SpawnPlayers();
 
         // Once the players have been created, start the game.
-        StartCoroutine(GameLoopMP());
+        //StartCoroutine(GameLoopSP());
     }
 
+    //Creates the delays for the start and end of the rounds, gets the UI in-game component
+    //Creates the map and spawns the players/enemies in their positions
+    //and finally starts the game loop
     private void StartMultiplayer()
     {
         // Create the delays so they only have to be made once.
@@ -138,6 +151,7 @@ public class GameplayManager : MonoBehaviour
 
     private void SpawnPlayers()
     {
+        //For all players...
         for (int i = 0; i < players.Length; i++)
         {
             // ... create them, set their player number and references needed for control.
@@ -147,24 +161,23 @@ public class GameplayManager : MonoBehaviour
         }
     }
 
-    // This is called from start and will run each phase of the game one after another.
-    private IEnumerator GameLoopMP()
+    private IEnumerator GameLoopSP()
     {
         // Start off by running the 'RoundStarting' coroutine but don't return until it's finished.
-        yield return StartCoroutine(RoundStarting());
+        yield return StartCoroutine(RoundStartingSP());
 
         // Once the 'RoundStarting' coroutine is finished, run the 'RoundPlaying' coroutine but don't return until it's finished.
-        yield return StartCoroutine(RoundPlaying());
+        yield return StartCoroutine(RoundPlayingSP());
 
         // Once execution has returned here, run the 'RoundEnding' coroutine, again don't return until it's finished.
-        yield return StartCoroutine(RoundEnding());
+        yield return StartCoroutine(RoundEndingSP());
 
         // This code is not run until 'RoundEnding' has finished.  At which point, check if a game winner has been found.
         if (gameWinner != null)
         {
             // If there is a game winner, update variables and move to the next level.
             UpdateVariables();
-            LoadMultiplayer();
+            LoadNextScene();
         }
         else
         {
@@ -174,7 +187,45 @@ public class GameplayManager : MonoBehaviour
         }
     }
 
-    private IEnumerator RoundStarting()
+    // This is called from start and will run each phase of the game one after another.
+    private IEnumerator GameLoopMP()
+    {
+        // Start off by running the 'RoundStarting' coroutine but don't return until it's finished.
+        yield return StartCoroutine(RoundStartingMP());
+
+        // Once the 'RoundStarting' coroutine is finished, run the 'RoundPlaying' coroutine but don't return until it's finished.
+        yield return StartCoroutine(RoundPlayingMP());
+
+        // Once execution has returned here, run the 'RoundEnding' coroutine, again don't return until it's finished.
+        yield return StartCoroutine(RoundEndingMP());
+
+        // This code is not run until 'RoundEnding' has finished.  At which point, check if a game winner has been found.
+        if (gameWinner != null)
+        {
+            // If there is a game winner, update variables and move to the next level.
+            UpdateVariables();
+            LoadNextScene();
+        }
+        else
+        {
+            // If there isn't a winner yet, restart this coroutine so the loop continues.
+            // Note that this coroutine doesn't yield.  This means that the current version of the GameLoop will end.
+            StartCoroutine(GameLoopMP());
+        }
+    }
+
+    private IEnumerator RoundStartingSP()
+    {
+        ResetUnits();
+        ResetMap();
+        DisableControl();
+
+        messageText.text = "LEVEL " + level;
+
+        yield return startWait;
+    }
+
+    private IEnumerator RoundStartingMP()
     {
         // As soon as the round starts reset the players and/or enemies and make sure they can't move.
         ResetUnits();
@@ -190,7 +241,7 @@ public class GameplayManager : MonoBehaviour
     }
 
 
-    private IEnumerator RoundPlaying()
+    private IEnumerator RoundPlayingMP()
     {
         // As soon as the round begins playing let the players control the bombermans.
         EnableControl();
@@ -207,7 +258,7 @@ public class GameplayManager : MonoBehaviour
     }
 
 
-    private IEnumerator RoundEnding()
+    private IEnumerator RoundEndingMP()
     {
         // Stop players from moving.
         DisableControl();
@@ -311,6 +362,17 @@ public class GameplayManager : MonoBehaviour
         return message;
     }
 
+    private void LoadNextScene()
+    {
+        if (SceneManager.GetActiveScene().name == "1P Level1")
+        {
+            LoadSinglePlayer();
+        }
+        else if (SceneManager.GetActiveScene().name == "2P Level1")
+        {
+            LoadMultiplayer();
+        }
+    }
 
     // This function is used to turn all the players and/or enemies back on and reset their positions and properties.
     private void ResetUnits()

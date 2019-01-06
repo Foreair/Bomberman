@@ -9,5 +9,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19553fb0279f7664683cd4960404dceb, type: 3}
-  m_Name: Put Bomb Decision
+  m_Name: Deploy Bomb Decision
   m_EditorClassIdentifier: 

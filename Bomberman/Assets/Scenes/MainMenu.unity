@@ -2605,6 +2605,10 @@ Prefab:
       propertyPath: newTrack
       value: 
       objectReference: {fileID: 8300000, guid: efe5488c979d073449d6d74880989060, type: 3}
+    - target: {fileID: 1562250147551750, guid: 99f9aca5d78b66942b4e285dfd0952c7, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99f9aca5d78b66942b4e285dfd0952c7, type: 2}
   m_IsPrefabAsset: 0

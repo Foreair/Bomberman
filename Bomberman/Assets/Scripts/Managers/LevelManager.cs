@@ -53,6 +53,7 @@ public class LevelManager : MonoBehaviour
     public GameObject[] pickUps;                                //Reference for different pickUps to use
 
     private int startPosCol, endPosCol, startPosRow, endPosRow;
+    private Dictionary<string, Vector2> corners;
 
     //Used to generate the base map 
     //Sets the boundaries of our level and the walls restraining the movement to inside the level
@@ -360,6 +361,7 @@ public class LevelManager : MonoBehaviour
         //Initialise range
         wallCount = new Count(0, rows / 2);
         destroyableWallCount = new Count(2, rows / 2);
+
         bool oddRowNumber, oddColNumber;
         oddRowNumber = rows % 2 == 1 ? true : false;
         oddColNumber = columns % 2 == 1 ? true : false;
@@ -397,37 +399,51 @@ public class LevelManager : MonoBehaviour
             startPosRow = 0;
             endPosRow = rows;
         }
+        corners = new Dictionary<string, Vector2>
+        {
+            { "upLeft", new Vector2(startPosCol + 0.5f, endPosRow - 0.5f) },
+            { "upRight", new Vector2(endPosCol - 0.5f, endPosRow - 0.5f) },
+            { "downRight", new Vector2(endPosCol - 0.5f, startPosRow + 0.5f) },
+            { "downLeft", new Vector2(startPosCol + 0.5f, startPosRow + 0.5f) }
+        };
     }
 
     private void InitialisePlayersSpawnPosition()
     {
+        GameObject spawnPos = new GameObject("Spawn Positions");
+        spawnPos.transform.parent = map.transform;
+
+        GameObject players = new GameObject("Players Spawn Positions");
+        players.transform.parent = spawnPos.transform;
+
+        GameObject enemies = new GameObject("Enemies Spawn Positions");
+        enemies.transform.parent = spawnPos.transform;
+
         if (GameplayManager.instance.players.Length == 2)
         {
-            GameObject spawnPos = new GameObject("Spawn Positions");
-            spawnPos.transform.parent = map.transform;
-
-            GameObject players = new GameObject("Players Spawn Positions");
-            players.transform.parent = spawnPos.transform;
-
-            GameObject enemies = new GameObject("Enemies Spawn Positions");
-            enemies.transform.parent = spawnPos.transform;
-
-
             GameObject player1 = new GameObject("Player 1");
             player1.transform.parent = players.transform;
-            player1.transform.position = new Vector3(startPosCol + 0.5f, startPosRow + 0.5f, 0f);
+            player1.transform.position = corners["upLeft"];
 
             GameObject player2 = new GameObject("Player 2");
             player2.transform.parent = players.transform;
-            player2.transform.position = new Vector3(endPosCol - 0.5f, endPosRow - 0.5f, 0f);
+            player2.transform.position = corners["downRight"];
 
             GameplayManager.instance.players[0].spawnPoint = player1.transform;
             GameplayManager.instance.players[1].spawnPoint = player2.transform;
 
         }
+        else if (GameplayManager.instance.players.Length == 1)
+        {
+            GameObject player1 = new GameObject("Player 1");
+            player1.transform.parent = players.transform;
+            player1.transform.position = corners["upLeft"];
+
+            GameplayManager.instance.players[0].spawnPoint = player1.transform;
+        }
         else
         {
-            Debug.Log("Only 2 players are supported");
+            Debug.Log("Only 1 or 2 players are supported");
         }
 
 
@@ -435,30 +451,26 @@ public class LevelManager : MonoBehaviour
 
     private void ClearPlayersSpawnPosition()
     {
-        //Clearing L around player1
-        Vector3Int spawnPos1 = mapTilemap.WorldToCell(GameplayManager.instance.players[0].spawnPoint.position);
-        Vector3Int h1 = new Vector3Int(spawnPos1.x + 1, spawnPos1.y, 0);
-        Vector3Int v1 = new Vector3Int(spawnPos1.x, spawnPos1.y + 1, 0);
+        for (int i = 0; i < GameplayManager.instance.players.Length; i++)
+        {
+            //Clearing Box of size 1 around player i
+            Vector3Int spawnPos = mapTilemap.WorldToCell(GameplayManager.instance.players[i].spawnPoint.position);
+            Vector3Int up = new Vector3Int(spawnPos.x, spawnPos.y + 1, 0);
+            Vector3Int right = new Vector3Int(spawnPos.x + 1, spawnPos.y, 0);
+            Vector3Int down = new Vector3Int(spawnPos.x, spawnPos.y - 1, 0);
+            Vector3Int left = new Vector3Int(spawnPos.x - 1, spawnPos.y, 0);
 
-        if (destroyableWallsTilemap.GetTile(spawnPos1))
-            destroyableWallsTilemap.SetTile(spawnPos1, null);
-        if (destroyableWallsTilemap.GetTile(h1))
-            destroyableWallsTilemap.SetTile(h1, null);
-        if (destroyableWallsTilemap.GetTile(v1))
-            destroyableWallsTilemap.SetTile(v1, null);
-
-        //Clearing L around player2
-        Vector3Int spawnPos2 = mapTilemap.WorldToCell(GameplayManager.instance.players[1].spawnPoint.position);
-        Vector3Int h2 = new Vector3Int(spawnPos2.x - 1, spawnPos2.y, 0);
-        Vector3Int v2 = new Vector3Int(spawnPos2.x, spawnPos2.y - 1, 0);
-
-        if (destroyableWallsTilemap.GetTile(spawnPos2))
-            destroyableWallsTilemap.SetTile(spawnPos2, null);
-        if (destroyableWallsTilemap.GetTile(h2))
-            destroyableWallsTilemap.SetTile(h2, null);
-        if (destroyableWallsTilemap.GetTile(v2))
-            destroyableWallsTilemap.SetTile(v2, null);
-
+            if (destroyableWallsTilemap.GetTile(spawnPos))
+                destroyableWallsTilemap.SetTile(spawnPos, null);
+            if (destroyableWallsTilemap.GetTile(up))
+                destroyableWallsTilemap.SetTile(up, null);
+            if (destroyableWallsTilemap.GetTile(right))
+                destroyableWallsTilemap.SetTile(right, null);
+            if (destroyableWallsTilemap.GetTile(down))
+                destroyableWallsTilemap.SetTile(down, null);
+            if (destroyableWallsTilemap.GetTile(left))
+                destroyableWallsTilemap.SetTile(left, null);
+        }
     }
 
     private void Initialise()
