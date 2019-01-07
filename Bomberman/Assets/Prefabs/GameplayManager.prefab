@@ -56,9 +56,6 @@ MonoBehaviour:
   isCentered: 0
   columns: 13
   rows: 7
-  pickUpsCount:
-    minimum: 2
-    maximum: 5
   floorTiles:
   - {fileID: 11400000, guid: 43c4f123b1b63214fac2164652a4175d, type: 2}
   wallTiles:
@@ -87,7 +84,11 @@ MonoBehaviour:
   endDelay: 3
   playerPrefab: {fileID: 1272174633844726, guid: b2728c42e3494e14f944b44ad9e156c3,
     type: 2}
+  enemyPrefab: {fileID: 1063070806166156, guid: a8597672fa058cf43bc813f245c82f64,
+    type: 2}
+  lifes: 2
   player1Color: {r: 0, g: 1, b: 1, a: 1}
   player2Color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   players: []
+  enemies: []
   map: {fileID: 0}

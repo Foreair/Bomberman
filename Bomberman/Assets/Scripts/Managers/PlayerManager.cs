@@ -7,10 +7,11 @@ public class PlayerManager {
 
     public Color playerColor;                               //Color of the player
 
-    [HideInInspector] public Transform spawnPoint;                            //Spawn location of this player
+    [HideInInspector] public Transform spawnPoint;          //Spawn location of this player
     [HideInInspector] public int playerNumber;              //Player id number
     [HideInInspector] public GameObject instance;           //Instance of the Player associated with this manager.
     [HideInInspector] public int wins;                      //Current number of wins for this player.
+    [HideInInspector] public int lifes;                     //Current number of lifes for this player.
     [HideInInspector] public string coloredPlayerText;      //string for the UI to show player's color
 
     private PlayerController playerController;
@@ -19,6 +20,9 @@ public class PlayerManager {
 
     public void Setup()
     {
+        wins = 0;
+        lifes = GameplayManager.instance.lifes;
+
         playerController = instance.GetComponent<PlayerController>();
         playerInput = playerController.playerInput;
         playerData = playerController.playerData;

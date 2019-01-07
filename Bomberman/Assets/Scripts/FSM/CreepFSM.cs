@@ -13,7 +13,7 @@ public class CreepFSM : MonoBehaviour
     [HideInInspector] public Grid grid;
     [HideInInspector] public Rigidbody2D rb;
     private Animator animator;
-    public bool aiActive;
+    public static bool aiActive = true;
 
     [HideInInspector] public BoxCollider2D myCollider;
     [HideInInspector] public Vector2 boxSize;
@@ -22,10 +22,8 @@ public class CreepFSM : MonoBehaviour
         //Physics
         myCollider = GetComponent<BoxCollider2D>();
         boxSize = new Vector2(myCollider.bounds.extents.x * 2, myCollider.bounds.extents.y * 2);
-        grid = GameObject.FindObjectOfType<Grid>();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator>();
-        aiActive = true;
     }
     private void Update()
     {

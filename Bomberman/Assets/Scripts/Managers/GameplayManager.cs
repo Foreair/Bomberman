@@ -16,10 +16,14 @@ public class GameplayManager : MonoBehaviour
     public float startDelay = 3f;                       // The delay between the start of RoundStarting and RoundPlaying phases.
     public float endDelay = 3f;                         // The delay between the end of RoundPlaying and RoundEnding phases.
     public GameObject playerPrefab;                     // Reference to the prefab the players will control.
+    public GameObject enemyPrefab;                      // Reference to the prefab the players will control.
+    public int lifes = 2;                               // Opportunities the player has before resetting level to 1.
     public Color player1Color = Color.cyan;             // Color of Player 1
     public Color player2Color = Color.yellow;           // Color of Player 2
 
     [HideInInspector] public PlayerManager[] players;   // A collection of managers for enabling and disabling different aspects of the players.
+    [HideInInspector] public CreepManager[] enemies;    // A collection of managers for enabling and disabling different aspects of the players.
+    [HideInInspector] public int enemiesNumber;         // Current number of enemies spawned on this level
     [HideInInspector] public GameObject map;            // Reference to the map. Each Map is represented by its grid containing different tilemaps.
 
     private int level = 1;                              // Which level the game is currently on.
@@ -59,13 +63,25 @@ public class GameplayManager : MonoBehaviour
         }
     }
 
+    private void InitializeEnemyManagers(int number)
+    {
+        enemies = new CreepManager[number];
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            enemies[i] = new CreepManager();
+        }
+    }
+
     //Function Called to start the SinglePlayerMode
     //Initialises Players Managers and calls the coroutine LoadSP
     public void LoadSinglePlayer()
     {
-        //Initializing PlayerManagers
+        enemiesNumber = (int)Mathf.Log(level, 2f);
+        if (enemiesNumber == 0)
+            enemiesNumber = 1;
         InitializePlayerManagers(1);
-
+        InitializeEnemyManagers(enemiesNumber);
+        
         //Hardcoded colors
         players[0].playerColor = player1Color;
 
@@ -125,11 +141,15 @@ public class GameplayManager : MonoBehaviour
         endWait = new WaitForSeconds(endDelay);
         messageText = GameObject.Find("Text").GetComponent<Text>();
 
+        //Creating map and generating spawnPositions
         GenerateMap(level);
+
+        //Now that we have spawnpositions preset, spawn players and enemies
         SpawnPlayers();
+        SpawnEnemies();
 
         // Once the players have been created, start the game.
-        //StartCoroutine(GameLoopSP());
+        StartCoroutine(GameLoopSP());
     }
 
     //Creates the delays for the start and end of the rounds, gets the UI in-game component
@@ -157,7 +177,19 @@ public class GameplayManager : MonoBehaviour
             // ... create them, set their player number and references needed for control.
             players[i].instance = Instantiate(playerPrefab, players[i].spawnPoint.position, players[i].spawnPoint.rotation) as GameObject;
             players[i].playerNumber = i + 1;
+            players[i].lifes = lifes;
             players[i].Setup();
+        }
+    }
+
+    private void SpawnEnemies()
+    {
+        //For all players...
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            // ... create them, set their player number and references needed for control.
+            enemies[i].instance = Instantiate(enemyPrefab, enemies[i].spawnPoint.position, enemies[i].spawnPoint.rotation) as GameObject;
+            enemies[i].Setup();
         }
     }
 
@@ -175,15 +207,22 @@ public class GameplayManager : MonoBehaviour
         // This code is not run until 'RoundEnding' has finished.  At which point, check if a game winner has been found.
         if (gameWinner != null)
         {
-            // If there is a game winner, update variables and move to the next level.
+            // If the player has won...
+            //...we move to the next level and recover our initial lifes
             UpdateVariables();
-            LoadNextScene();
+            LoadSinglePlayer();
         }
         else
         {
-            // If there isn't a winner yet, restart this coroutine so the loop continues.
-            // Note that this coroutine doesn't yield.  This means that the current version of the GameLoop will end.
-            StartCoroutine(GameLoopMP());
+            //If the player has lost, we check if he still has lifes remaining
+            if (players[0].lifes > 0)
+                StartCoroutine(GameLoopSP());
+            else
+            {
+                level = 0;
+                UpdateVariables();
+                LoadSinglePlayer();
+            }
         }
     }
 
@@ -204,7 +243,7 @@ public class GameplayManager : MonoBehaviour
         {
             // If there is a game winner, update variables and move to the next level.
             UpdateVariables();
-            LoadNextScene();
+            LoadMultiplayer();
         }
         else
         {
@@ -216,8 +255,8 @@ public class GameplayManager : MonoBehaviour
 
     private IEnumerator RoundStartingSP()
     {
-        ResetUnits();
         ResetMap();
+        ResetUnits();
         DisableControl();
 
         messageText.text = "LEVEL " + level;
@@ -240,6 +279,21 @@ public class GameplayManager : MonoBehaviour
         yield return startWait;
     }
 
+    private IEnumerator RoundPlayingSP()
+    {
+        // As soon as the round begins playing let the players control the bombermans.
+        EnableControl();
+
+        // Clear the text from the screen.
+        messageText.text = string.Empty;
+
+        // While there is not one player left...
+        while (!NoPlayersOrNoEnemiesLeft())
+        {
+            // ... return on the next frame.
+            yield return null;
+        }
+    }
 
     private IEnumerator RoundPlayingMP()
     {
@@ -257,6 +311,29 @@ public class GameplayManager : MonoBehaviour
         }
     }
 
+    private IEnumerator RoundEndingSP()
+    {
+        // Stop players from moving.
+        DisableControl();
+
+        // Clear the winner from the previous level.
+        gameWinner = null;
+
+        // See if there is a winner now the round is over.
+        //We use GetRoundWinner because it checks if someone is still standing
+        gameWinner = GetRoundWinner();
+
+        //If the player has not won...
+        if (gameWinner == null)
+            players[0].lifes--;
+
+        // Get a message based on the scores and whether or not there is a game winner and display it.
+        string message = EndMessageSP();
+        messageText.text = message;
+
+        // Wait for the specified length of time until yielding control back to the game loop.
+        yield return endWait;
+    }
 
     private IEnumerator RoundEndingMP()
     {
@@ -277,7 +354,7 @@ public class GameplayManager : MonoBehaviour
         gameWinner = GetGameWinner();
 
         // Get a message based on the scores and whether or not there is a game winner and display it.
-        string message = EndMessage();
+        string message = EndMessageMP();
         messageText.text = message;
 
         // Wait for the specified length of time until yielding control back to the game loop.
@@ -288,20 +365,49 @@ public class GameplayManager : MonoBehaviour
     private bool OnePlayerLeft()
     {
         // Start the count of players left at zero.
-        int numPlayersLeft = 0;
+        int numLeft = 0;
 
         // Go through all the players...
         for (int i = 0; i < players.Length; i++)
         {
             // ... and if they are active, increment the counter.
             if (players[i].instance.activeSelf)
-                numPlayersLeft++;
+                numLeft++;
         }
 
         // If there are one or fewer payers remaining return true, otherwise return false.
-        return numPlayersLeft <= 1;
+        return numLeft <= 1;
     }
 
+    private bool NoPlayersOrNoEnemiesLeft()
+    {
+        int playersLeft = 0, enemiesLeft = 0;
+
+        // Go through all the players...
+        for (int i = 0; i < players.Length; i++)
+        {
+            // ... and if they are active, increment the counter.
+            if (players[i].instance.activeSelf)
+                playersLeft++;
+        }
+
+        if (playersLeft == 0)
+            return true;
+
+        // Go through all the players...
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            // ... and if they are active, increment the counter.
+            if (enemies[i].instance.activeSelf)
+                enemiesLeft++;
+        }
+
+        if (enemiesLeft == 0)
+            return true;
+
+        return false;
+
+    }
 
     // This function is to find out if there is a winner of the round.
     // This function is called with the assumption that 1 or fewer players are currently active.
@@ -336,8 +442,27 @@ public class GameplayManager : MonoBehaviour
     }
 
 
+    private string EndMessageSP()
+    {
+        string message = "DEFEAT!";
+
+        // Add some line breaks after the initial message.
+        message += "\n\n\n\n";
+
+        // Go through all the players and add each of their scores to the message.
+        for (int i = 0; i < players.Length; i++)
+        {
+            message += players[i].coloredPlayerText + ": " + players[i].lifes + " LIFES\n";
+        }
+
+        if (gameWinner != null)
+            message = "VICTORY!";
+
+        return message;
+    }
+
     // Returns a string message to display at the end of each round.
-    private string EndMessage()
+    private string EndMessageMP()
     {
         // By default when a round ends there are no winners so the default end message is a draw.
         string message = "DRAW!";
@@ -357,22 +482,11 @@ public class GameplayManager : MonoBehaviour
 
         // If there is a game winner, change the entire message to reflect that.
         if (gameWinner != null)
-            message = gameWinner.coloredPlayerText + " WINS THE GAME!";
+            message = gameWinner.coloredPlayerText + " WINS!";
 
         return message;
     }
 
-    private void LoadNextScene()
-    {
-        if (SceneManager.GetActiveScene().name == "1P Level1")
-        {
-            LoadSinglePlayer();
-        }
-        else if (SceneManager.GetActiveScene().name == "2P Level1")
-        {
-            LoadMultiplayer();
-        }
-    }
 
     // This function is used to turn all the players and/or enemies back on and reset their positions and properties.
     private void ResetUnits()
@@ -381,6 +495,12 @@ public class GameplayManager : MonoBehaviour
         {
             player.Reset();
         }
+
+        foreach (var enemy in enemies)
+        {
+            enemy.Reset();
+        }
+
     }
 
     private void ResetMap()
@@ -403,6 +523,11 @@ public class GameplayManager : MonoBehaviour
         {
             player.DisableControl();
         }
+
+        foreach (var enemy in enemies)
+        {
+            enemy.DisableControl();
+        }
     }
 
     private void EnableControl()
@@ -411,15 +536,17 @@ public class GameplayManager : MonoBehaviour
         {
             player.EnableControl();
         }
+
+        foreach (var enemy in enemies)
+        {
+            enemy.EnableControl();
+        }
     }
 
     private void UpdateVariables()
     {
         level++;
         roundNumber = 0;
-        foreach (var player in players)
-        {
-            player.wins = 0;
-        }
+
     }
 }

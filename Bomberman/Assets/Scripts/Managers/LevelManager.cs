@@ -45,15 +45,15 @@ public class LevelManager : MonoBehaviour
 
     private Count wallCount;                                    //Holds the range of how many walls do we want in each column
     private Count destroyableWallCount;                         //Holds the range of how many destroyableWalls do we want in each column
-    public Count pickUpsCount = new Count(2, 5);                //Holds the range of how many pickups do we want in each column
     public Tile[] floorTiles;                                   //Reference for different floorTiles to use
     public Tile[] wallTiles;                                    //Reference for different wallTiles to use
     public Tile[] destroyableWallTiles;                         //Reference for different destroyableWallTiles to use
     public Tile[] backgroundTiles;                              //Reference for different backgroundTiles to use
     public GameObject[] pickUps;                                //Reference for different pickUps to use
 
-    private int startPosCol, endPosCol, startPosRow, endPosRow;
-    private Dictionary<string, Vector2> corners;
+    private int startPosCol, endPosCol, startPosRow, endPosRow; //Map boundaries
+    private Dictionary<string, Vector2> corners;                //Map corners
+    private List<Vector3> spawnPositions;                       //Used for enemy and player spawn positions
 
     //Used to generate the base map 
     //Sets the boundaries of our level and the walls restraining the movement to inside the level
@@ -122,7 +122,6 @@ public class LevelManager : MonoBehaviour
         col += startPosCol;
         Tilemap[] tilemaps = map.GetComponentsInChildren<Tilemap>();
         List<Vector3> availablePositions = CheckPositions(col, tilemaps);
-        int a = availablePositions.Count;
         Vector3Int result = mapTilemap.WorldToCell(availablePositions[Random.Range(0, availablePositions.Count)]);
 
         return result;
@@ -145,9 +144,18 @@ public class LevelManager : MonoBehaviour
                     break;
                 }
             }
+   
             if (availablePos)
                 positions.Add(new Vector3(col, i, 0));
         }
+
+        foreach (var item in spawnPositions)
+        {
+            //We convert the center of the cell to the cell itself
+            Vector3 aux = mapTilemap.WorldToCell(item);
+            positions.Remove(aux);
+        }
+
         return positions;
     }
 
@@ -399,6 +407,8 @@ public class LevelManager : MonoBehaviour
             startPosRow = 0;
             endPosRow = rows;
         }
+
+        spawnPositions = new List<Vector3>();
         corners = new Dictionary<string, Vector2>
         {
             { "upLeft", new Vector2(startPosCol + 0.5f, endPosRow - 0.5f) },
@@ -408,7 +418,7 @@ public class LevelManager : MonoBehaviour
         };
     }
 
-    private void InitialisePlayersSpawnPosition()
+    private void InitializePlayersSpawnPosition()
     {
         GameObject spawnPos = new GameObject("Spawn Positions");
         spawnPos.transform.parent = map.transform;
@@ -416,18 +426,17 @@ public class LevelManager : MonoBehaviour
         GameObject players = new GameObject("Players Spawn Positions");
         players.transform.parent = spawnPos.transform;
 
-        GameObject enemies = new GameObject("Enemies Spawn Positions");
-        enemies.transform.parent = spawnPos.transform;
-
         if (GameplayManager.instance.players.Length == 2)
         {
             GameObject player1 = new GameObject("Player 1");
             player1.transform.parent = players.transform;
             player1.transform.position = corners["upLeft"];
+            spawnPositions.Add(player1.transform.position);
 
             GameObject player2 = new GameObject("Player 2");
             player2.transform.parent = players.transform;
             player2.transform.position = corners["downRight"];
+            spawnPositions.Add(player2.transform.position);
 
             GameplayManager.instance.players[0].spawnPoint = player1.transform;
             GameplayManager.instance.players[1].spawnPoint = player2.transform;
@@ -438,6 +447,7 @@ public class LevelManager : MonoBehaviour
             GameObject player1 = new GameObject("Player 1");
             player1.transform.parent = players.transform;
             player1.transform.position = corners["upLeft"];
+            spawnPositions.Add(player1.transform.position);
 
             GameplayManager.instance.players[0].spawnPoint = player1.transform;
         }
@@ -447,6 +457,22 @@ public class LevelManager : MonoBehaviour
         }
 
 
+    }
+
+    private void InitializeEnemiesSpawnPositions(int number)
+    {
+        GameObject enemies = new GameObject("Enemies Spawn Positions");
+        enemies.transform.parent = GameObject.Find("Spawn Positions").transform;
+
+        for (int i = 0; i < number; i++)
+        {
+            GameObject enemy = new GameObject("Enemy "+ i+1);
+            enemy.transform.parent = enemies.transform;
+            enemy.transform.position = mapTilemap.GetCellCenterWorld(RandomPosition(Random.Range(0, columns)));
+            spawnPositions.Add(enemy.transform.position);
+
+            GameplayManager.instance.enemies[i].spawnPoint = enemy.transform;
+        }
     }
 
     private void ClearPlayersSpawnPosition()
@@ -483,10 +509,11 @@ public class LevelManager : MonoBehaviour
     {
         Initialise();
         GenerateBasicMap();
-        InitialisePlayersSpawnPosition();
+        InitializePlayersSpawnPosition();
         LayoutObjectUniformly(wallsTilemap, wallTiles);
         LayoutObjectAtRandom(destroyableWallsTilemap, destroyableWallTiles, destroyableWallCount.minimum, destroyableWallCount.maximum);
         ClearPlayersSpawnPosition();
+        InitializeEnemiesSpawnPositions(GameplayManager.instance.enemiesNumber);
         GeneratePowerups();
         InitialisePhysics();
 

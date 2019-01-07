@@ -26,7 +26,7 @@ public class DestroyThings : MonoBehaviour
         else if (collision.CompareTag("Creep"))
         {
             if (!collision.gameObject.GetComponent<CreepFSM>().creepData.isImmortal)
-                collision.gameObject.GetComponent<CreepFSM>().creepData.dead = true;
+                collision.gameObject.SetActive(false);
         }
         else if (collision.CompareTag("Bomb"))
         {

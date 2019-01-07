@@ -7,8 +7,6 @@ public class PlayerData{
 
     //Public player variables
     [Header("Player Variables")]
-    [Tooltip("Player's current number of lifes")]
-    public int lifes;
     [Tooltip("Player's movement speed")]
     public float speed;
     [Tooltip("Maximum number of bombs the player can deploy")]

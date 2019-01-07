@@ -6,17 +6,35 @@ using UnityEngine;
 public class CreepData {
 
     //Enemy info
-    public float speed = 5.0f;
-    public int maxBombs = 1;
-    public int radiusExplosion = 1;
+    public float speed;
+    public int maxBombs;
+    public int radiusExplosion;
     public bool isImmortal = false;
-    [HideInInspector] public int currentBombs = 0;
-    [HideInInspector] public bool dead = false;
+    [HideInInspector] public int currentBombs;
+    [HideInInspector] public bool dead;
 
 
     //Movement info
-    [HideInInspector] public bool isMoving = false;
-    [HideInInspector] public Vector2 direction = Vector2.zero;
-    [HideInInspector] public bool horizontalMovement = false;
-    
+    [HideInInspector] public bool isMoving;
+    [HideInInspector] public Vector2 direction;
+    [HideInInspector] public bool horizontalMovement;
+
+    public void InitializeData()
+    {
+        //Basic Creep Data
+        speed = 5.0f;
+        maxBombs = 1;
+        radiusExplosion = 1;
+
+        //Preset Data
+        currentBombs = 0;
+        dead = false;
+        isMoving = false;
+        horizontalMovement = false;
+        direction = Vector2.zero;
+
+        //Hacks
+        isImmortal = false;
+    }
+
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public static class Utilities{
 
+    //Given a position inside a cell, returns a position in the middle of that cell
     static public Vector3 SnapToCell(Vector3 pos)
     {
         Grid grid = Object.FindObjectOfType<Grid>();
